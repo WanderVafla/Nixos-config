@@ -43,7 +43,7 @@
       zed-editor
       nixd
       nil
-      # hyprpaper
+      
       direnv
       nix-direnv
       git
@@ -61,6 +61,7 @@
       nodejs_26
 
       sqlitebrowser
+      # hyprcursor  
     ];
 
   imports = [
