@@ -3,7 +3,7 @@
 {
   imports = [
     ./hypr.nix
-    ./nocatalia.nix
+    ./noctalia.nix
     ./kitty.nix
     # ./zen-browser.nix
   ];

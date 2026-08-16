@@ -13,7 +13,7 @@ in
   xdg.configFile."noctalia/config.toml".source =
   config.lib.file.mkOutOfStoreSymlink configPath;
 
-  xdg.configFile."hypr/nocatalia.lua".source =
+  xdg.configFile."hypr/noctalia.lua".source =
   config.lib.file.mkOutOfStoreSymlink themeHyprlandPath;
 
   home.activation.makeNoctaliaConfigWritable = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
