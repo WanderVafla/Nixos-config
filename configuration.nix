@@ -140,8 +140,13 @@
   services.power-profiles-daemon.enable = true;
   services.gvfs.enable = true;
   security.polkit.enable = true;
-  services.tailscale.enable = true;
-
+  services.tailscale = {
+    enable = true;
+    extraUpFlags = [
+        "--operator=vladyslav"
+      ];
+  };
+  
   programs.hyprland = {
     enable = true;
   };
