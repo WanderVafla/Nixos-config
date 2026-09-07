@@ -39,6 +39,10 @@ hl.bind(mainMod .. "+ Tab", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center"
 hl.bind(mainMod .. "+comma", hl.dsp.exec_cmd(ipc .. "settings-toggle"))
 hl.bind("ALT + Tab", hl.dsp.exec_cmd(ipc .. "window-switcher"))
 hl.bind(mainMod .. "+ L", hl.dsp.exec_cmd(ipc .. "session lock"))
+hl.bind(mainMod .. "+ F1", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center media"))
+hl.bind(mainMod .. "+ F2", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center audio"))
+hl.bind(mainMod .. "+ F3", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center calendar"))
+hl.bind(mainMod .. "+ F4", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center network"))
 
 -- Media keys
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. "volume-up"))
