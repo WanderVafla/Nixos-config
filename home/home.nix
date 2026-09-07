@@ -28,18 +28,15 @@
   };
 
   services.ssh-agent.enable = true;
-
+  
   home.packages = with pkgs; [
       inputs.zen-browser.packages.${pkgs.system}.default
       spotify
       
       chromium
-      # ashell
       kdePackages.dolphin
       kdePackages.ark
       p7zip
-      # vicinae
-      # kitty
       zed-editor
       nixd
       nil
@@ -61,7 +58,19 @@
       nodejs_26
 
       sqlitebrowser
-      # hyprcursor  
+
+      # noctalia
+      networkmanagerapplet
+      grim
+      slurp
+
+      python312
+      uv
+
+      pandoc # convert files also need to obsidian plugins     
+      typst
+
+      bun
     ];
 
   imports = [
