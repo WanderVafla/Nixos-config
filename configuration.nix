@@ -175,6 +175,7 @@
 
   fonts.packages = with pkgs; [
     font-awesome_4
+    dejavu_fonts
   ];
 
   services.displayManager = {
