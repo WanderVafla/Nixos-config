@@ -28,7 +28,36 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+  };
+
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [
+      cups-filters
+      foomatic-db
+      foomatic-db-ppds
+      foomatic-db-engine
+    ];
+  };
+
+  hardware.printers = {
+    ensurePrinters = [
+      {
+        name = "Sharp-MX2651";
+        location = "portable";
+        deviceUri = "socket://printer.localdomain:9100";
+        model = "foomatic-db-ppds/Generic-PCL_6_PCL_XL_Printer-pxlcolor.ppd.gz";
+        ppdOptions = {
+          PageSize = "A4";
+        };
+      }
+    ];
+    ensureDefaultPrinter = "Sharp-MX2651";
+  };
+
+  
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
   # Set your time zone.
