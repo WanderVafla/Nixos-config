@@ -78,8 +78,7 @@ widget_order = [
     "lockscreen-login-box@HDMI-A-1",
     "lockscreen-login-box@eDP-1",
     "lockscreen-widget-0000000000000001",
-    "lockscreen-widget-0000000000000002",
-    "lockscreen-widget-battery"
+    "lockscreen-widget-0000000000000002"
 ]
 
     [lockscreen_widgets.grid]
@@ -106,7 +105,6 @@ widget_order = [
         show_caps_lock = true
         show_keyboard_layout = true
         show_login_button = true
-        show_password_hint = true
 
     [lockscreen_widgets.widget."lockscreen-login-box@eDP-1"]
     box_height = 70.0
@@ -127,7 +125,6 @@ widget_order = [
         show_caps_lock = true
         show_keyboard_layout = true
         show_login_button = true
-        show_password_hint = true
 
     [lockscreen_widgets.widget.lockscreen-widget-0000000000000001]
     box_height = 144.0
@@ -160,21 +157,6 @@ widget_order = [
         color = "tertiary"
         shadow = true
 
-    [lockscreen_widgets.widget.lockscreen-widget-battery]
-    type = "label"
-    output = "eDP-1"
-    box_width = 160.0
-    box_height = 48.0
-    cx = 640.0
-    cy = 344.0  # Расположение под погодой (у погоды cy = 296)
-    rotation = 0.0
-        
-        [lockscreen_widgets.widget.lockscreen-widget-battery.settings]
-        command = "echo \"🔋 $(cat /sys/class/power_supply/BAT*/capacity)%\""
-        interval = 10
-        center_text = true
-        color = "tertiary"
-            
 [notification]
 scale = 0.85000000521540642
 
