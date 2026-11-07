@@ -1,6 +1,11 @@
 { pkgs, inputs, ... }:
 
 {
+
+  imports = [
+    ./modules
+  ];
+
   home.username = "vladyslav";
   home.homeDirectory = "/home/vladyslav";
 
@@ -10,16 +15,16 @@
 
   programs.git = {
     enable = true;
-    userName = "WanderVafla";
-    userEmail = "procenkovladik1@gmail.com";
-    extraConfig = {
+    settings = {
+      user.name = "WanderVafla";
+      user.email = "procenkovladik1@gmail.com";
       init.defaultBranch = "main";
     };
   };
 
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
+    # addKeysToAgent = "yes";
     matchBlocks = {
       "github.com" = {
         identityFile = "~/.ssh/id_ed25519";
@@ -28,52 +33,67 @@
   };
 
   services.ssh-agent.enable = true;
-  
+
   home.packages = with pkgs; [
-      inputs.zen-browser.packages.${pkgs.system}.default
-      spotify
-      
-      chromium
-      kdePackages.dolphin
-      kdePackages.ark
-      p7zip
-      zed-editor
-      nixd
-      nil
-      
-      direnv
-      nix-direnv
-      git
-      micro
-      obsidian
-      opencode
-      # Launguages
-      php85
-      rustc
-      # Packages
-      pnpm
-      cargo
+    hurl
+    gh
 
-      phpPackages.composer
-      nodejs_26
+    inputs.spotifast.packages.${pkgs.stdenv.hostPlatform.system}.default
 
-      sqlitebrowser
+    noctalia
+    spotify
+    brightnessctl
 
-      # noctalia
-      networkmanagerapplet
-      grim
-      slurp
+    kdePackages.dolphin
+    kdePackages.ark
+    p7zip
+    zed-editor
+    nixd
+    nil
 
-      python312
-      uv
 
-      pandoc # convert files also need to obsidian plugins     
-      typst
+    nwg-displays
+    # direnv
+    # nix-direnv
+    git
+    micro
+    obsidian
+    # Agents
+    claude-code
+    opencode
+    # Launguages
+    php85
+    rustc
+    # Packages
+    pnpm
+    cargo
 
-      bun
-    ];
+    phpPackages.composer
+    # nodejs_26
 
-  imports = [
-    ./modules
+    sqlitebrowser
+
+    # noctalia
+    networkmanagerapplet
+    grim
+    slurp
+
+    python312
+    uv
+
+    pandoc # convert files also need to obsidian plugins
+    typst
+
+    bun
+    tree
+    nodejs_latest
+    dive
+    llama-cpp-vulkan
+
+    ganttproject-bin
+    postman
   ];
+
+  # Open HTTP and HTTPS ports
+  # networking.firewall.allowedTCPPorts = [ 80 443 ];
 }

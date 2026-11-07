@@ -9,6 +9,13 @@ hl.monitor({
     scale    = "1",
 })
 
+hl.monitor({
+    output   = "DP-2",
+    mode     = "1920x1080",
+    position = "auto",
+    scale    = "1",
+})
+
 ---------------------
 ---- MY PROGRAMS ----
 ---------------------
@@ -76,10 +83,10 @@ hl.config({
 
 hl.config({
     input = {
-        kb_layout  = "us, ru, ch",
-        kb_variant = ", , fr",
+        kb_layout  = "us,ru,ch",
+        kb_variant = ", ,fr",
         kb_model   = "",
-        kb_options = "grp:alt_shift_toggle",
+        kb_options = "",
         kb_rules   = "",
 
         follow_mouse = 1,
@@ -92,9 +99,21 @@ hl.config({
     },
 })
 
+-- hl.gesture({
+--     fingers = 3,
+--     direction = "horizontal",
+--     action = "workspace"
+-- })
+
 hl.gesture({
     fingers = 3,
     direction = "horizontal",
+    action = "scroll_move"
+})
+
+hl.gesture({
+    fingers = 3,
+    direction = "vertical",
     action = "workspace"
 })
 
@@ -170,4 +189,11 @@ hl.window_rule({
     match = { class = "dev.noctalia.Noctalia" },
     float = true,
     size = { 1080, 920 },
+})
+
+-- yazi file picker (xdg-desktop-portal-termfilechooser)
+hl.window_rule({
+    match = { class = "termfilechooser" },
+    float = true,
+    size = { 1200, 750 },
 })

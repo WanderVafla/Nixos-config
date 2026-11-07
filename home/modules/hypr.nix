@@ -11,7 +11,7 @@ hyprlandLua = (pkgs.replaceVarsWith {
     src = fullConfigLua;
     replacements = {
       fileManger = "dolphin";
-      browser = "zen";
+      browser = "zen-beta";
     };
   }).overrideAttrs (_: {
     checkPhase = ":";

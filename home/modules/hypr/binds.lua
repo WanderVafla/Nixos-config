@@ -2,6 +2,32 @@
 ---- KEYBINDINGS ----
 ---------------------
 
+-- hl.set_options({
+--     -- Time window in ms to register a double-press (default is usually around 200-300ms)
+--     double_tap_timeout = 100, 
+-- })
+
+local current = 0
+
+local function set_layout(i)
+  current = i
+  hl.dispatch(hl.dsp.exec_cmd("hyprctl switchxkblayout all " .. i))
+end
+
+local function toggle_en_ru()
+  set_layout(current == 0 and 1 or 0)
+end
+
+-- Alt+Shift: en <-> ru (сначала Alt, потом Shift)
+hl.bind("ALT + SHIFT_L", toggle_en_ru)
+-- То же, если сначала нажат Shift, потом Alt
+hl.bind("SHIFT + ALT_L", toggle_en_ru)
+
+-- Ctrl+Alt+F: французская
+hl.bind("ALT + SHIFT + F", function()
+  set_layout(2)
+end)
+
 local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 local ipc = "noctalia msg "
 
@@ -23,9 +49,10 @@ hl.bind(mainMod .. " + O", hl.dsp.exec_cmd("obsidian")) -- Open Obsidian
 
 -- -- NixOS binds
 hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("zeditor ~/.config/nixos")) -- Update Home-manager
-hl.bind(mainMod .. " + SHIFT + H", hl.dsp.exec_cmd("kitty -e bash -c 'home-manager switch --flake ~/.config/nixos/'")) -- Update Home-manager
-hl.bind(mainMod .. " + SHIFT + U", hl.dsp.exec_cmd("kitty -e bash -c 'sudo nixos-rebuild switch --flake ~/.config/nixos#JT-24-11-07-vladyslav'")) -- Update System Configuration
-
+-- hl.bind(mainMod .. " + SHIFT + H", hl.dsp.exec_cmd("kitty -e bash -c 'home-manager switch --flake ~/.config/nixos/  && input 'Finish!' '")) -- Update Home-manager
+-- hl.bind(mainMod .. " + SHIFT + U", hl.dsp.exec_cmd("kitty -e bash -c 'sudo nixos-rebuild switch --flake ~/.config/nixos#JT-24-11-07-vladyslav && input 'Finish!' '")) -- Update System Configuration
+hl.bind(mainMod .. " + SHIFT + H", hl.dsp.exec_cmd("kitty --hold nh home switch")) -- Update Home-manager
+hl.bind(mainMod .. " + SHIFT + U", hl.dsp.exec_cmd("kitty --hold nh os switch"))   -- Update System Configuration
 -- -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
@@ -36,14 +63,18 @@ hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
 hl.bind(mainMod .. "+ R", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
 hl.bind(mainMod .. "+ SHIFT + V", hl.dsp.exec_cmd(ipc .. "panel-toggle clipboard"))
 hl.bind(mainMod .. "+ Tab", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center"))
-hl.bind(mainMod .. "+comma", hl.dsp.exec_cmd(ipc .. "settings-toggle"))
+-- hl.bind(mainMod .. "+comma", hl.dsp.exec_cmd(ipc .. "settings-toggle"))
 hl.bind("ALT + Tab", hl.dsp.exec_cmd(ipc .. "window-switcher"))
 hl.bind(mainMod .. "+ L", hl.dsp.exec_cmd(ipc .. "session lock"))
 hl.bind(mainMod .. "+ F1", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center media"))
 hl.bind(mainMod .. "+ F2", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center audio"))
 hl.bind(mainMod .. "+ F3", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center calendar"))
 hl.bind(mainMod .. "+ F4", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center network"))
-
+-- Screenshot --
+hl.bind("Print", hl.dsp.exec_cmd(ipc .. "screenshot-annotate"), {
+    long_press = true
+})
+hl.bind("Print", hl.dsp.exec_cmd(ipc .. "screenshot-region"), { locked = true })
 -- Media keys
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. "volume-up"))
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc .. "volume-down"))
@@ -58,6 +89,10 @@ for i = 1, 10 do
      hl.bind(mainMod .. " + " .. key,             hl.dsp.focus({ workspace = i}))
      hl.bind(mainMod .. " + SHIFT + " .. key,     hl.dsp.window.move({ workspace = i }))
 end
+
+hl.bind(mainMod .. " + period", hl.dsp.layout("move +col"))
+hl.bind(mainMod .. " + comma",  hl.dsp.layout("swapcol l"))
+hl.bind(mainMod .. " + slash",  hl.dsp.layout("colresize +conf"))
 
 -- Example special workspace (scratchpad)
 hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
@@ -74,10 +109,10 @@ hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 -- Laptop multimedia keys for volume and LCD brightness
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { locked = true, repeating = true })
- hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),     { locked = true, repeating = true })
- hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true, repeating = true })
- hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),                  { locked = true, repeating = true })
- hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),                  { locked = true, repeating = true })
+hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),     { locked = true, repeating = true })
+hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),                  { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),                  { locked = true, repeating = true })
 
 -- -- Requires playerctl
  hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })

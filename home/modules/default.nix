@@ -6,6 +6,12 @@
     ./noctalia.nix
     ./kitty.nix
     ./cursor.nix
-    # ./zen-browser.nix
+    ./zsh.nix
+    ./zen-browser.nix
+    ./file-chooser.nix
+    ./yazi.nix
+    ./chromium.nix
+    ./web-apps
+    ./phone
   ];
 }

@@ -2,20 +2,36 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      inputs.noctalia-greeter.nixosModules.default
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    inputs.noctalia-greeter.nixosModules.default
+  ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+  # nix.settings.auto-optimise-store = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
+  systemd.services.NetworkManager-wait-online.enable = false;
+  zramSwap = {
+    enable = true;
+    memoryPercent = 50;
+  };
+  virtualisation.docker.enableOnBoot = false;
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -31,6 +47,25 @@
   networking.networkmanager = {
     enable = true;
   };
+  # Cours d'APL
+  services.netbird.enable = true;
+
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.swtpm.enable = true;
+  };
+
+  virtualisation.spiceUSBRedirection.enable = true;
+  virtualisation.docker.enable = true;
+  programs.virt-manager.enable = true;
+
+  services.journald.settings.Journal.SystemMaxUse = "300M";
+  services.fwupd.enable = true;
+
+  services.fprintd.enable = true;
+  security.pam.services.login.fprintAuth = true;
+  # security.pam.services.greeter.fprintAuth = true;
+  security.pam.services.sudo.fprintAuth = true;
 
   services.printing = {
     enable = true;
@@ -57,7 +92,6 @@
     ensureDefaultPrinter = "Sharp-MX2651";
   };
 
-  
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
   # Set your time zone.
@@ -76,7 +110,14 @@
   users.users."vladyslav" = {
     isNormalUser = true;
     description = "Vladyslav Chuhunov";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+      "video"
+      "libvirtd"
+    ];
+    shell = pkgs.zsh;
   };
 
   # Allow unfree packages
@@ -94,16 +135,35 @@
 
   services.dbus.enable = true;
 
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      zlib
+      openssl
+      stdenv.cc.cc.lib
+      libpulseaudio
+    ];
+  };
+
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     tmux
     btop
-    sddm-chili-theme
     home-manager
     fastfetch
     playerctl
+    (callPackage ./packages/claude-desktop.nix { })
   ];
+
+  # Secret Service for apps that store logins and tokens (Claude Desktop, Chromium),
+  # unlocked with the login password at the greetd prompt.
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -119,7 +179,7 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedTCPPorts = [ 8000 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
@@ -132,9 +192,17 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "26.05"; # Did you read the comment?
 
-  virtualisation.docker.enable = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+
+  hardware.enableAllFirmware = true;
 
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;
@@ -143,32 +211,58 @@
   services.tailscale = {
     enable = true;
     extraUpFlags = [
-        "--operator=vladyslav"
-      ];
+      "--operator=vladyslav"
+    ];
+  };
+
+  programs.hyprland = {
+    enable = true;
   };
   
-  programs.hyprland = {
+  programs = {
+    steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+  };
+  gamemode.enable = true;
+  };
+  
+  programs.zsh = {
     enable = true;
   };
 
   programs.nh = {
     enable = true;
     flake = "/home/vladyslav/.config/nixos";
+    clean = {
+      enable = true;
+      extraArgs = "--keep-since 14d --keep 5";
+    };
   };
 
-  programs.noctalia-greeter = {
+  services.displayManager.noctalia-greeter = {
     enable = true;
 
-    # Optional configuration
-    greeter-args = "";
     settings = {
+      # Настройки курсора (согласно документации: [cursor])
       cursor = {
+        path = pkgs.bibata-cursors;
+        size = 46;
         theme = "Bibata-Modern-Ice";
-        size = 24;
-        path = "${pkgs.bibata-cursors}/share/icons";
       };
+
+      # Настройки клавиатуры (согласно документации: [keyboard])
       keyboard = {
         layout = "us";
+      };
+
+      # Настройки оформления и обоев (согласно документации: [appearance.wallpaper])
+      appearance = {
+        wallpaper = {
+          path = "${./home/Wallpapers/14.png}"; # Автоматически помещает файл в /nix/store
+          fill_mode = "crop"; # Варианты: "crop", "fit", "stretch", "center", "repeat", "span"
+          fill_color = "#000000"; # Цвет фона при режимах fit/center
+        };
       };
     };
   };
@@ -176,6 +270,8 @@
   fonts.packages = with pkgs; [
     font-awesome_4
     dejavu_fonts
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
   ];
 
   services.displayManager = {
@@ -191,17 +287,24 @@
     enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
-      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-termfilechooser
     ];
     config = {
       common = {
         default = [ "gtk" ];
       };
       hyprland = {
-        default = [ "hyprland" "gtk" ];
+        default = [
+          "hyprland"
+          "gtk"
+        ];
         "org.freedesktop.impl.portal.Screencast" = [ "hyprland" ];
         "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
+        "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
       };
     };
   };
+
+  # Make GTK apps open files through the portal (yazi) instead of their own dialog
+  environment.sessionVariables.GTK_USE_PORTAL = "1";
 }

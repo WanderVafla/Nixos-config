@@ -2,9 +2,7 @@
 ---- LOOK AND FEEL ----
 -----------------------
 
--- theme from Noctalia
-local theme = require("noctalia")
-theme.apply_theme()
+
 
 -- Refer to https://wiki.hypr.land/Configuring/Basics/Variables/
 hl.config({
@@ -25,7 +23,7 @@ hl.config({
         -- Please see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Tearing/ before you turn this on
         allow_tearing = false,
 
-        layout = "dwindle",
+        layout = "scrolling",
     },
 
     decoration = {
@@ -140,3 +138,7 @@ hl.config({
         fullscreen_on_one_column = true,
     },
 })
+
+-- theme from Noctalia
+local theme = require("noctalia")
+theme.apply_theme()
