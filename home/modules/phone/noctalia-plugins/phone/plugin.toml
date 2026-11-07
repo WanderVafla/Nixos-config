@@ -1,0 +1,23 @@
+id = "vladyslav/phone"
+name = "Phone"
+version = "0.1.0"
+plugin_api = 33
+author = "vladyslav"
+license = "MIT"
+icon = "device-mobile"
+description = "Phone battery, ADB and Syncthing status, with quick actions over ADB."
+tags = [ "android", "utility" ]
+dependencies = [ "phone-watch", "phone-connect", "phone-screen", "phone-screenshot", "setsid" ]
+
+[[widget]]
+id = "phone"
+entry = "widget.luau"
+
+[[panel]]
+id = "panel"
+entry = "panel.luau"
+placement = "attached"
+position = "auto"
+open_near_click = true
+width = 380
+height = 260
