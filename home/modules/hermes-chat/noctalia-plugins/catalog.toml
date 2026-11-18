@@ -1,0 +1,15 @@
+# Catalog of the local Noctalia plugin source: one [[plugin]] row per subdirectory.
+# Keep the fields in sync with each plugin's plugin.toml.
+
+[[plugin]]
+id = "vladyslav/hermes-chat"
+name = "Hermes Chat"
+version = "0.1.0"
+updated_at = 1795330800
+added_at = 1795330800
+author = "vladyslav"
+license = "MIT"
+icon = "message-circle"
+description = "Chat with the Hermes agent on the homelab server over SSH, with Markdown replies."
+plugin_api = 33
+tags = ["ai", "chat", "utility"]

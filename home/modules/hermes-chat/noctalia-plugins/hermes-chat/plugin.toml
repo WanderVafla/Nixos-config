@@ -1,0 +1,28 @@
+id = "vladyslav/hermes-chat"
+name = "Hermes Chat"
+version = "0.1.0"
+plugin_api = 33
+author = "vladyslav"
+license = "MIT"
+icon = "message-circle"
+description = "Chat with the Hermes agent on the homelab server over SSH, with Markdown replies."
+tags = [ "ai", "chat", "utility" ]
+dependencies = [ "hermes-chat-remote" ]
+
+# Owns the conversation and the SSH streams, so a reply keeps arriving while the panel is closed.
+[[service]]
+id = "chat"
+entry = "service.luau"
+
+[[widget]]
+id = "hermes-chat"
+entry = "widget.luau"
+
+[[panel]]
+id = "panel"
+entry = "panel.luau"
+placement = "attached"
+position = "auto"
+open_near_click = true
+width = 460
+height = 620

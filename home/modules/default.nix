@@ -13,5 +13,6 @@
     ./chromium.nix
     ./web-apps
     ./phone
+    ./hermes-chat
   ];
 }
