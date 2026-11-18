@@ -10,7 +10,7 @@ fullConfigLua = pkgs.writeText "hyprland-config.lua" ''
 hyprlandLua = (pkgs.replaceVarsWith {
     src = fullConfigLua;
     replacements = {
-      fileManger = "dolphin";
+      fileManger = "kitty 'yazi'";
       browser = "zen-beta";
     };
   }).overrideAttrs (_: {
