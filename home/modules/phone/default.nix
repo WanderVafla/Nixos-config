@@ -43,5 +43,50 @@
       default = 47100;
       description = "Port the phone-notify daemon listens on for the phone app.";
     };
+
+    proximityLock = {
+      mode = lib.mkOption {
+        type = lib.types.enum [ "off" "tailscale" "bluetooth" ];
+        default = "off";
+        description = ''
+          Default way to detect that the phone went away and lock the laptop.
+          Only used until a mode is picked in Noctalia or the phone's tile;
+          that choice is saved in ~/.local/state/phone-notify/lock-mode.
+        '';
+      };
+
+      minRssi = lib.mkOption {
+        type = lib.types.ints.between (-100) 0;
+        default = -75;
+        description = "Weakest BLE beacon signal, in dBm, that still counts as near (Bluetooth mode).";
+      };
+
+      interval = lib.mkOption {
+        type = lib.types.ints.positive;
+        default = 15;
+        description = "Seconds from the start of one proximity check to the start of the next.";
+      };
+
+      scanTime = lib.mkOption {
+        type = lib.types.ints.positive;
+        default = 6;
+        description = ''
+          Seconds each Bluetooth check scans for the beacon. The laptop's radio is
+          busy scanTime / interval of the time (6 / 15 = 40 %).
+        '';
+      };
+
+      awayChecks = lib.mkOption {
+        type = lib.types.ints.positive;
+        default = 3;
+        description = "Consecutive \"away\" checks before locking; lock delay ≈ interval × awayChecks.";
+      };
+    };
+
+    mediaPort = lib.mkOption {
+      type = lib.types.port;
+      default = 47101;
+      description = "Port of the phone app's command server (media controls); fixed in CommandServer.kt.";
+    };
   };
 }

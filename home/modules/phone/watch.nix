@@ -31,6 +31,8 @@ let
       if [ "$now" != "$prev" ]; then
         if [ "$now" = online ]; then
           notify-send -a Phone "Phone connected" "Reachable over Tailscale at ${config.phone.host}"
+          # Updates sent while the phone was unreachable were lost; ask for everything again.
+          ${config.home.profileDirectory}/bin/phone-command sync >/dev/null 2>&1 || true
         else
           notify-send -a Phone "Phone disconnected" "Not reachable over Tailscale"
         fi

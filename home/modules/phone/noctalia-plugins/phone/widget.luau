@@ -28,7 +28,15 @@ function update()
 	barWidget.setGlyphColor(color)
 	barWidget.setColor(color)
 	barWidget.setText(if s.battery ~= nil then `{s.battery}%` else "")
-	barWidget.setTooltip(if s.charging then "Phone online, charging" else "Phone online")
+	local tooltip = if s.charging then "Phone online, charging" else "Phone online"
+	if s.dnd ~= "off" then
+		tooltip ..= `\nDo Not Disturb: {s.dnd}`
+	end
+	tooltip ..= `\nSound: {s.ringer}`
+	if s.btDevices ~= "" then
+		tooltip ..= `\nBluetooth: {s.btDevices}`
+	end
+	barWidget.setTooltip(tooltip)
 end
 
 function onClick()

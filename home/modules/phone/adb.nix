@@ -57,6 +57,23 @@ let
       echo "$file"
     '';
   };
+
+  # Android 13+ apps cannot switch Bluetooth themselves, so this goes through adb.
+  # The phone app then reports the new state, which updates the Noctalia widget.
+  phoneBluetooth = pkgs.writeShellApplication {
+    name = "phone-bluetooth";
+    runtimeInputs = [ pkgs.android-tools ];
+    text = ''
+      case "''${1:-}" in
+        on) action=enable; state=STATE_ON ;;
+        off) action=disable; state=STATE_OFF ;;
+        *) echo "usage: phone-bluetooth on|off" >&2; exit 2 ;;
+      esac
+      adb connect ${addr} >/dev/null
+      adb -s ${addr} shell cmd bluetooth_manager "$action"
+      adb -s ${addr} shell cmd bluetooth_manager "wait-for-state:$state"
+    '';
+  };
 in
 {
   home.packages = [
@@ -66,6 +83,7 @@ in
     phoneScreen
     phoneConnect
     phoneScreenshot
+    phoneBluetooth
   ];
 
   # Lets tools (and agents) target the phone without passing -s every time.

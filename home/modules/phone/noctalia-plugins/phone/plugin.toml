@@ -7,7 +7,7 @@ license = "MIT"
 icon = "device-mobile"
 description = "Phone battery, ADB and Syncthing status, with quick actions over ADB."
 tags = [ "android", "utility" ]
-dependencies = [ "phone-watch", "phone-connect", "phone-screen", "phone-screenshot", "setsid" ]
+dependencies = [ "phone-watch", "phone-connect", "phone-screen", "phone-screenshot", "phone-command", "phone-bluetooth", "phone-lock-mode", "setsid" ]
 
 [[widget]]
 id = "phone"
@@ -20,4 +20,4 @@ placement = "attached"
 position = "auto"
 open_near_click = true
 width = 380
-height = 260
+height = 415

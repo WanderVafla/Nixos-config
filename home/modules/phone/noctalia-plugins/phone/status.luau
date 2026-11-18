@@ -2,6 +2,8 @@
 -- keeps the widget free: it never wakes the phone itself.
 --   phone-watch/status   reachability and Syncthing (phone-watch systemd service)
 --   phone-notify/battery battery, pushed by the phone app (phone-notify daemon)
+--   phone-notify/device  Bluetooth, Do Not Disturb, ringer mode, pushed the same way
+--   phone-notify/lock    proximity lock mode and whether the phone counts as near
 
 local M = {}
 
@@ -29,6 +31,8 @@ function M.read()
 	end
 	-- The phone app reports only on change, so battery data has no staleness limit.
 	local battery = readKeyValues("phone-notify/battery") or {}
+	local device = readKeyValues("phone-notify/device") or {}
+	local lock = readKeyValues("phone-notify/lock") or {}
 
 	local updated = tonumber(watch.updated) or 0
 	local stale = noctalia.nowMs() / 1000 - updated > STALE_SECONDS
@@ -41,6 +45,16 @@ function M.read()
 		lowBattery = tonumber(watch.low_battery) or 20,
 		syncConnected = watch.sync_connected == "1",
 		syncCompletion = tonumber(watch.sync_completion),
+		bluetooth = device.bluetooth == "1",
+		btDevices = device.bt_devices or "",
+		-- off, priority, alarms or silence
+		dnd = device.dnd or "off",
+		-- normal, vibrate or silent
+		ringer = device.ringer or "normal",
+		-- off, tailscale or bluetooth
+		lockMode = lock.mode or "off",
+		-- true / false, or nil while unknown
+		near = if lock.near == "1" then true elseif lock.near == "0" then false else nil,
 		updated = updated,
 	}
 end
