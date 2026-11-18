@@ -17,6 +17,8 @@
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
+    # Atuin owns Ctrl-R.
+    historyWidget.command = "";
   };
 
   programs.zsh.shellAliases = {
