@@ -24,10 +24,17 @@
 
   programs.ssh = {
     enable = true;
-    # addKeysToAgent = "yes";
-    matchBlocks = {
+    # The legacy defaults matched OpenSSH's own defaults anyway.
+    enableDefaultConfig = false;
+    settings = {
+      # "*".AddKeysToAgent = "yes";
       "github.com" = {
-        identityFile = "~/.ssh/id_ed25519";
+        IdentityFile = "~/.ssh/id_ed25519";
+      };
+      "homelab" = {
+        hostname = "100.105.168.5";
+        user = "WanderVafla";
+        identityFile = "~/.ssh/homelabNIXOS";
       };
     };
   };
@@ -50,7 +57,6 @@
     zed-editor
     nixd
     nil
-
 
     nwg-displays
     # direnv
