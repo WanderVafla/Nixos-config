@@ -4,12 +4,12 @@
 [[plugin]]
 id = "vladyslav/hermes-chat"
 name = "Hermes Chat"
-version = "0.1.0"
-updated_at = 1795330800
+version = "0.2.0"
+updated_at = 1795338000
 added_at = 1795330800
 author = "vladyslav"
 license = "MIT"
 icon = "message-circle"
-description = "Chat with the Hermes agent on the homelab server over SSH, with Markdown replies."
+description = "Chat with the Hermes agent on the homelab server over SSH, switch chats and review pending deploys."
 plugin_api = 33
 tags = ["ai", "chat", "utility"]

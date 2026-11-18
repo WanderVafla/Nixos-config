@@ -1,8 +1,14 @@
 # hermes-chat
 
 Home Manager module and Noctalia plugin to chat with the Hermes agent on the
-homelab server. Replies stream in and render as Markdown. When Hermes wants to
-run a dangerous command, the panel shows its approval request with buttons.
+homelab server and to watch its deploys. Replies stream in and render as
+Markdown. When Hermes wants to run a dangerous command, the panel shows its
+approval request with buttons. The panel has two tabs:
+
+- **Chat**: switch between desktop chats (a select on top) or start a new one.
+- **Deploy**: what the homelab deployer is doing, the commits and protected
+  files waiting for approval, a link to the diff, and an approve button that
+  opens a terminal with `sudo homelab-deploy approve`.
 
 ```
 Noctalia plugin ──runStream──▶ hermes-chat-remote ──ssh──▶ hermes-chat (server) ──▶ Hermes API (container)
@@ -16,15 +22,19 @@ stored on this machine.
 
 | File | Responsibility |
 |---|---|
-| [`default.nix`](default.nix) | `hermesChat.sshHost` option and the `hermes-chat-remote` SSH wrapper |
+| [`default.nix`](default.nix) | `hermesChat.sshHost` option and the SSH wrappers: `hermes-chat-remote`, `homelab-deploy-status-remote`, `homelab-deploy-approve` |
 | [`noctalia-plugins/`](noctalia-plugins) | Local Noctalia plugin source with `vladyslav/hermes-chat` |
 | `hermes-chat/plugin.toml` | Manifest: service, bar widget, panel |
-| `hermes-chat/service.luau` | Owns the chat: session, SSH streams, approvals, persistence |
+| `hermes-chat/service.luau` | Owns the chat: session, SSH streams, switching, approvals, persistence |
+| `hermes-chat/sessions.luau` | Lists the server's desktop chats and loads one chat's messages |
+| `hermes-chat/deploy.luau` | Polls the deploy status (every minute, every 10 s after an approval) |
 | `hermes-chat/protocol.luau` | Parses the `event<TAB>json` lines of the stream |
 | `hermes-chat/store.luau` | Saves the session id and recent messages |
 | `hermes-chat/channel.luau` | Shared state keys between the service, panel and widget |
-| `hermes-chat/panel.luau` | Chat panel: Markdown messages, approval box, input |
-| `hermes-chat/widget.luau` | Bar icon colored by status |
+| `hermes-chat/panel.luau` | Panel shell: tab bar and the active tab |
+| `hermes-chat/chat_view.luau` | Chat tab: session select, Markdown messages, approval box, input |
+| `hermes-chat/deploy_view.luau` | Deploy tab: state, pending commits and files, approve and diff buttons |
+| `hermes-chat/widget.luau` | Bar icon colored by chat and deploy status |
 
 ## How it works
 
@@ -38,6 +48,11 @@ stored on this machine.
   first message pays for the handshake.
 - Approval answers are limited to `once`, `session` and `deny`. A permanent
   `always` is not offered.
+- Deploy approval is deliberately not one click: the button opens a terminal
+  running `ssh -t homelab sudo homelab-deploy approve`, so the sudo password
+  and the y/N prompt stay a separate barrier from the SSH key.
+- The session list shows only desktop chats (`source=api_server`); Telegram
+  sessions belong to the Hermes gateway and are not continued here.
 - The chat is its own Hermes session and does not mix with Telegram.
 
 ## State outside Nix
@@ -50,7 +65,7 @@ stored on this machine.
 
 ## Setting up
 
-1. Deploy the server side (homelab PR #31), then check `ssh homelab 'hermes-chat new'`.
+1. Deploy the server side (homelab PRs #31–#33), then check `ssh homelab 'hermes-chat sessions'` and `ssh homelab homelab-deploy-status`.
 2. `home-manager switch --flake ~/.config/nixos#vladyslav`
 3. Register the plugin source and enable the plugin:
    ```sh
@@ -69,4 +84,6 @@ with `plugin.toml`.
 | "Could not create a Hermes session" | `hermes-chat-remote new` in a terminal; with a passphrase-protected key, the key must be in ssh-agent (BatchMode never prompts) |
 | Reply stops halfway | The SSH connection dropped and Hermes interrupted the run; send again |
 | Session not found | The service starts a new session on the next message |
+| Deploy tab: "Could not read the deploy status" | `homelab-deploy-status-remote` in a terminal |
+| Approve terminal closes at once | `homelab-deploy-approve` in a terminal; the sudo password is asked on the server |
 | Panel looks stale | `journalctl --user -u noctalia` or `~/.cache/noctalia/noctalia.log`, look for `hermes-chat` |

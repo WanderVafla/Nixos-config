@@ -1,20 +1,25 @@
 -- Background service that owns the chat: it creates the Hermes session, streams each reply over
--- SSH (hermes-chat-remote), keeps the messages and publishes them for the panel and bar widget.
+-- SSH (hermes-chat-remote), switches between sessions, keeps the messages and publishes them for
+-- the panel and bar widget. It also drives the deploy status poller (deploy.luau).
 -- It lives as long as Noctalia, so a reply keeps arriving while the panel is closed.
 
 local channel = require("./channel.luau")
+local deploy = require("./deploy.luau")
 local protocol = require("./protocol.luau")
+local sessions = require("./sessions.luau")
 local store = require("./store.luau")
 
 local REMOTE = "hermes-chat-remote"
--- Same rule as hermes-chat on the server: ids end up in a remote shell command line.
-local ID_PATTERN = "^[%w_%-]+$"
+local ID_PATTERN = sessions.ID_PATTERN
 local MAX_ERROR_LINES = 20
 
 local chat = store.load()
+-- Desktop chats on the server, newest first; nil until the first successful listing.
+type Session = { id: string, title: string, lastActive: number? } -- same shape as sessions.Session
+local sessionList: { Session }? = nil
 
 -- What the panel shows besides the messages.
-local status: "idle" | "thinking" | "approval" | "error" = "idle"
+local status: "idle" | "thinking" | "loading" | "approval" | "error" = "idle"
 local activeTool: string? = nil
 local approval: { [string]: any }? = nil
 local lastError: string? = nil
@@ -47,6 +52,8 @@ local function publish()
 	end
 	noctalia.state.set(channel.VIEW, {
 		messages = messages,
+		sessionId = chat.sessionId,
+		sessions = sessionList or {},
 		status = status,
 		tool = activeTool,
 		approval = approval,
@@ -55,6 +62,17 @@ local function publish()
 		revision = revision,
 	})
 	dirty = false
+end
+
+local function refreshSessions()
+	sessions.list(function(list, err)
+		if list == nil then
+			noctalia.log(`hermes-chat: listing sessions failed: {err}`)
+			return
+		end
+		sessionList = list
+		markDirty()
+	end)
 end
 
 local function fail(message: string)
@@ -134,6 +152,8 @@ local function finishReply(exitCode: number)
 	reply = nil
 	store.save(chat)
 	markDirty()
+	-- A new session appears in the list, and an old one may have a new title.
+	refreshSessions()
 end
 
 local function onStreamLine(line: string)
@@ -239,6 +259,33 @@ local function newChat()
 	markDirty()
 end
 
+-- Loads another session's history from the server; the chat is locked until it arrives.
+local function switchSession(id: string)
+	if busy or id == chat.sessionId or not string.match(id, ID_PATTERN) then
+		return
+	end
+	busy = true
+	status = "loading"
+	lastError = nil
+	chat = { sessionId = id, messages = {} }
+	markDirty()
+	sessions.messages(id, function(messages, err)
+		busy = false
+		-- Another switch or a new chat may have happened meanwhile.
+		if chat.sessionId ~= id then
+			return
+		end
+		if messages == nil then
+			fail(`Could not load the chat: {err}`)
+			return
+		end
+		chat.messages = messages
+		status = "idle"
+		store.save(chat)
+		markDirty()
+	end)
+end
+
 local function onRequest(request: any)
 	if type(request) ~= "table" or request.nonce == lastNonce then
 		return
@@ -250,6 +297,15 @@ local function onRequest(request: any)
 		answerApproval(request.choice)
 	elseif request.kind == "new" then
 		newChat()
+	elseif request.kind == "switch" and type(request.id) == "string" then
+		switchSession(request.id)
+	elseif request.kind == "panel-opened" then
+		refreshSessions()
+		deploy.refresh()
+	elseif request.kind == "refresh-deploy" then
+		deploy.refresh()
+	elseif request.kind == "watch-deploy" then
+		deploy.pollFast()
 	end
 end
 
@@ -260,6 +316,8 @@ if type(pending) == "table" then
 end
 noctalia.state.watch(channel.REQUEST, onRequest)
 
+refreshSessions()
+
 -- Deltas arrive many times a second; publishing on a tick keeps the panel from re-rendering per token.
 noctalia.setUpdateInterval(100)
 
@@ -268,4 +326,5 @@ function update()
 	if dirty then
 		publish()
 	end
+	deploy.tick()
 end
