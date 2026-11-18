@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, lib, inputs, ... }:
 
 {
 
@@ -85,6 +85,7 @@
     slurp
 
     python312
+    (lib.lowPrio python315) # python3 stays 3.12; 3.15 is available as python3.15
     uv
 
     pandoc # convert files also need to obsidian plugins
