@@ -9,12 +9,12 @@ hl.monitor({
     scale    = "1",
 })
 
-hl.monitor({
-    output   = "DP-2",
-    mode     = "1920x1080",
-    position = "auto",
-    scale    = "1",
-})
+-- Per-monitor layout lives in ~/.config/hypr/monitors.lua, outside the Nix store,
+-- so nwg-displays (or any other tool) can rewrite it without a rebuild.
+local ok, err = pcall(require, "monitors")
+if not ok then
+    print("monitors.lua not loaded: " .. tostring(err))
+end
 
 ---------------------
 ---- MY PROGRAMS ----
