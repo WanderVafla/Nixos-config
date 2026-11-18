@@ -25,7 +25,8 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.configurationLimit = 10;
+  # /boot is only 196 MB and every generation keeps its own kernel and initrd there.
+  boot.loader.systemd-boot.configurationLimit = 3;
   systemd.services.NetworkManager-wait-online.enable = false;
   zramSwap = {
     enable = true;
