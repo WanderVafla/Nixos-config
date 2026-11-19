@@ -35,14 +35,34 @@ sidebar = "full"
 
 [desktop_widgets]
 schema_version = 2
-widget_order = []
+widget_order = [ "desktop-widget-0000000000000001" ]
 
     [desktop_widgets.grid]
     cell_size = 16
     major_interval = 4
     visible = true
 
-    [desktop_widgets.widget]
+    # Big dot-matrix clock on the laptop screen; cx/cy is the widget center in screen pixels
+    [desktop_widgets.widget.desktop-widget-0000000000000001]
+    box_height = 300.0
+    box_width = 560.0
+    cx = 360.0
+    cy = 330.0
+    output = "eDP-1"
+    placement_height = 1200.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "clock"
+
+        [desktop_widgets.widget.desktop-widget-0000000000000001.settings]
+        background_opacity = 0.0
+        background_padding = 0
+        background_radius = 0
+        center_text = false
+        clock_style = "digital"
+        color = "on_surface"
+        font_family = "Doto"
+        format = "{:%H:%M}"
 
 [idle]
 behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
@@ -141,7 +161,28 @@ widget_order = [
         background_radius = 0
         center_text = true
         clock_style = "digital"
+        font_family = "Doto"
         format = "{:%H:%M}\\n{:%d.%m.%d}"
+
+    [lockscreen_widgets.widget.lockscreen-widget-0000000000000003]
+    box_height = 144.0
+    box_width = 256.0
+    cx = 960.0
+    cy = 268.0
+    output = "HDMI-A-1"
+    placement_height = 1080.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "clock"
+
+        [lockscreen_widgets.widget.lockscreen-widget-0000000000000003.settings]
+        background_opacity = 0.0
+        background_padding = 0
+        background_radius = 0
+        center_text = true
+        clock_style = "digital"
+        font_family = "Doto"
+        format = "{:%H:%M}\\n{:%d.%m.%y}"
 
     [lockscreen_widgets.widget.lockscreen-widget-0000000000000002]
     box_height = 48.0
