@@ -4,8 +4,6 @@
 # Rows: capitals 650..50, lowercase 450..50, descenders down to -150, capital accents at 750.
 # "#" is a dot, "." an empty cell. Lines that start with "# " are comments.
 
-= А A
-= В B
 = Е E
 = К K
 = М M
@@ -25,10 +23,29 @@
 = х x
 = і i
 
+# Not copies of A and B: Cyrillic А gets a round top, В loses B's serifs.
+= А 650
+.###.
+#...#
+#...#
+#####
+#...#
+#...#
+#...#
+
 = Б 650
 #####
 #....
 #....
+####.
+#...#
+#...#
+####.
+
+= В 650
+####.
+#...#
+#...#
 ####.
 #...#
 #...#
