@@ -27,6 +27,9 @@ entry = "widget.luau"
     label_key = "settings.pitch.label"
     description_key = "settings.pitch.description"
     default = 12.0
+    min = 4.0
+    max = 40.0
+    step = 1.0
 
     [[desktop_widget.setting]]
     key = "dot_scale"
@@ -34,6 +37,9 @@ entry = "widget.luau"
     label_key = "settings.dot_scale.label"
     description_key = "settings.dot_scale.description"
     default = 0.6
+    min = 0.2
+    max = 1.0
+    step = 0.05
 
     [[desktop_widget.setting]]
     key = "char_gap"
@@ -41,6 +47,9 @@ entry = "widget.luau"
     label_key = "settings.char_gap.label"
     description_key = "settings.char_gap.description"
     default = 1.0
+    min = 0.0
+    max = 4.0
+    step = 1.0
 
     [[desktop_widget.setting]]
     key = "show_seconds"
