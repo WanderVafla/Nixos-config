@@ -17,6 +17,7 @@ local config = {
 	pitch = conf("pitch", 12.0),
 	dotScale = conf("dot_scale", 0.6),
 	charGap = conf("char_gap", 1.0),
+	layout = conf("layout", "horizontal"),
 	showSeconds = conf("show_seconds", false),
 	showDate = conf("show_date", false),
 	dateAlign = conf("date_align", 0.0),
@@ -59,13 +60,28 @@ local function render()
 		colonColor = config.colonColor,
 		hideColon = hideColon,
 	}
-	local lines = { matrix.line(time, glyphs, style) }
+	-- Horizontal: one line "HH:MM[:SS]". Vertical: hours, minutes and seconds stacked, no colons.
+	local timeLines: { string } = { time }
+	if config.layout == "vertical" then
+		timeLines = { string.format("%02d", now.hour), string.format("%02d", now.min) }
+		if config.showSeconds then
+			table.insert(timeLines, string.format("%02d", now.sec))
+		end
+	end
+	local lines = {}
+	local timeWidth = 0
+	for _, text in ipairs(timeLines) do
+		table.insert(lines, matrix.line(text, glyphs, style))
+		timeWidth = math.max(timeWidth, matrix.width(text, glyphs, style))
+	end
+	local timeBlock = ui.column({ gap = config.pitch, align = "start" }, lines)
+	lines = { timeBlock }
 	if config.showDate then
 		local small = table.clone(style)
 		small.pitch = config.pitch / 2
 		small.hideColon = false
 		-- date_align moves the date from the left edge (0) through the center (0.5) to the right edge (1).
-		local offset = (matrix.width(time, glyphs, style) - matrix.width(date, glyphs, small)) * config.dateAlign
+		local offset = (timeWidth - matrix.width(date, glyphs, small)) * config.dateAlign
 		table.insert(lines, ui.row({ gap = 0 }, {
 			ui.box({ width = math.max(0, offset), height = 1, fill = "#00000000" }),
 			matrix.line(date, glyphs, small),

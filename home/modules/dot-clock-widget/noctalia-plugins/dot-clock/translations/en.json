@@ -42,6 +42,12 @@
     "date_align": {
       "label": "Date position",
       "description": "0 puts the date under the left edge of the time, 0.5 centers it, 1 aligns it to the right edge."
+    },
+    "layout": {
+      "label": "Layout",
+      "description": "Horizontal shows HH:MM on one line; vertical stacks hours, minutes and seconds without colons.",
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
     }
   }
 }

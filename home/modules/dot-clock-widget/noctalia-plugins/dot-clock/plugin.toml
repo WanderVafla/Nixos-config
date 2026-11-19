@@ -22,6 +22,17 @@ entry = "widget.luau"
     advanced = true
 
     [[desktop_widget.setting]]
+    key = "layout"
+    type = "select"
+    label_key = "settings.layout.label"
+    description_key = "settings.layout.description"
+    default = "horizontal"
+    options = [
+        { value = "horizontal", label_key = "settings.layout.horizontal" },
+        { value = "vertical", label_key = "settings.layout.vertical" },
+    ]
+
+    [[desktop_widget.setting]]
     key = "pitch"
     type = "double"
     label_key = "settings.pitch.label"
