@@ -36,8 +36,8 @@
       "description": "Color role of the digits."
     },
     "colon_color": {
-      "label": "Colon color",
-      "description": "Color role of the colon; set it to error for a red accent."
+      "label": "Separator color",
+      "description": "Color role of the colon and of the dots in the date; set it to error for a red accent."
     },
     "date_align": {
       "label": "Date position",

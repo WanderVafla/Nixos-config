@@ -63,7 +63,6 @@ local function render()
 	if config.showDate then
 		local small = table.clone(style)
 		small.pitch = config.pitch / 2
-		small.colonColor = config.color
 		small.hideColon = false
 		-- date_align moves the date from the left edge (0) through the center (0.5) to the right edge (1).
 		local offset = (matrix.width(time, glyphs, style) - matrix.width(date, glyphs, small)) * config.dateAlign

@@ -8,8 +8,8 @@ export type Style = {
 	dotScale: number, -- dot diameter relative to pitch
 	charGap: number, -- empty cells between characters
 	color: string,
-	colonColor: string,
-	hideColon: boolean,
+	colonColor: string, -- color of the separators ":" and "."
+	hideColon: boolean, -- blinking: hides ":" only
 }
 
 local function glyphNode(rows: { string }, style: Style, color: string, hidden: boolean)
@@ -59,12 +59,12 @@ function M.line(text: string, glyphs: { [string]: { string } }, style: Style)
 		local ch = string.sub(text, i, i)
 		local rows = glyphs[ch]
 		if rows then
-			local isColon = ch == ":"
+			local isSeparator = ch == ":" or ch == "."
 			table.insert(nodes, glyphNode(
 				rows,
 				style,
-				if isColon then style.colonColor else style.color,
-				isColon and style.hideColon
+				if isSeparator then style.colonColor else style.color,
+				ch == ":" and style.hideColon
 			))
 		end
 	end

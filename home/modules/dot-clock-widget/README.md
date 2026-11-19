@@ -25,7 +25,7 @@ Set per widget in the Noctalia widget editor (or in `noctalia/config.toml`):
 | `show_seconds` | false | Seconds after the minutes |
 | `show_date` | false | Date under the time, at half the pitch |
 | `blink_colon` | false | Hide the colon every other second |
-| `color` / `colon_color` | on_surface | Palette roles; `error` gives a red colon |
+| `color` / `colon_color` | on_surface | Palette roles of the digits and of the separators (`:` and the date dots); `error` gives a red accent |
 | `glyphs_path` | fonts/dot-clock/glyphs.txt | Glyph file (advanced) |
 
 Set `background_opacity = 0.0` on the widget to drop the default card behind it.
