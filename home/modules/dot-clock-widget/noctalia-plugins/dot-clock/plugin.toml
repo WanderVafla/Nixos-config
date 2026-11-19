@@ -1,0 +1,78 @@
+id = "vladyslav/dot-clock"
+name = "Dot Clock"
+version = "0.1.0"
+plugin_api = 33
+author = "vladyslav"
+license = "MIT"
+icon = "clock"
+description = "Dot-matrix clock for the desktop and the lock screen, drawn from the Dot Clock glyph grids."
+tags = [ "clock", "desktop" ]
+
+# Works as a desktop widget and as a lock screen widget.
+[[desktop_widget]]
+id = "clock"
+entry = "widget.luau"
+
+    [[desktop_widget.setting]]
+    key = "glyphs_path"
+    type = "string"
+    label_key = "settings.glyphs_path.label"
+    description_key = "settings.glyphs_path.description"
+    default = "~/.config/nixos/home/modules/fonts/dot-clock/glyphs.txt"
+    advanced = true
+
+    [[desktop_widget.setting]]
+    key = "pitch"
+    type = "double"
+    label_key = "settings.pitch.label"
+    description_key = "settings.pitch.description"
+    default = 12.0
+
+    [[desktop_widget.setting]]
+    key = "dot_scale"
+    type = "double"
+    label_key = "settings.dot_scale.label"
+    description_key = "settings.dot_scale.description"
+    default = 0.6
+
+    [[desktop_widget.setting]]
+    key = "char_gap"
+    type = "double"
+    label_key = "settings.char_gap.label"
+    description_key = "settings.char_gap.description"
+    default = 1.0
+
+    [[desktop_widget.setting]]
+    key = "show_seconds"
+    type = "bool"
+    label_key = "settings.show_seconds.label"
+    description_key = "settings.show_seconds.description"
+    default = false
+
+    [[desktop_widget.setting]]
+    key = "show_date"
+    type = "bool"
+    label_key = "settings.show_date.label"
+    description_key = "settings.show_date.description"
+    default = false
+
+    [[desktop_widget.setting]]
+    key = "blink_colon"
+    type = "bool"
+    label_key = "settings.blink_colon.label"
+    description_key = "settings.blink_colon.description"
+    default = false
+
+    [[desktop_widget.setting]]
+    key = "color"
+    type = "color"
+    label_key = "settings.color.label"
+    description_key = "settings.color.description"
+    default = "on_surface"
+
+    [[desktop_widget.setting]]
+    key = "colon_color"
+    type = "color"
+    label_key = "settings.colon_color.label"
+    description_key = "settings.colon_color.description"
+    default = "on_surface"

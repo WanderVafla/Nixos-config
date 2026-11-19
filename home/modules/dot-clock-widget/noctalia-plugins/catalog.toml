@@ -1,0 +1,15 @@
+# Catalog of the local Noctalia plugin source: one [[plugin]] row per subdirectory.
+# Keep the fields in sync with each plugin's plugin.toml.
+
+[[plugin]]
+id = "vladyslav/dot-clock"
+name = "Dot Clock"
+version = "0.1.0"
+updated_at = 1795068000
+added_at = 1795068000
+author = "vladyslav"
+license = "MIT"
+icon = "clock"
+description = "Dot-matrix clock for the desktop and the lock screen, drawn from the Dot Clock glyph grids."
+plugin_api = 33
+tags = ["clock", "desktop"]

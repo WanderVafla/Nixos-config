@@ -1,0 +1,43 @@
+{
+  "notify": {
+    "glyphs": "Could not read the glyph grids. Check the glyph file path in the widget settings."
+  },
+  "settings": {
+    "glyphs_path": {
+      "label": "Glyph file",
+      "description": "Dot Clock grids (glyphs.txt), shared with the Dot Clock font."
+    },
+    "pitch": {
+      "label": "Grid step",
+      "description": "Distance between two dot centers in pixels; sets the clock size."
+    },
+    "dot_scale": {
+      "label": "Dot size",
+      "description": "Dot diameter relative to the grid step (1.0 makes dots touch)."
+    },
+    "char_gap": {
+      "label": "Character gap",
+      "description": "Empty grid cells between two characters."
+    },
+    "show_seconds": {
+      "label": "Seconds",
+      "description": "Show seconds after the minutes."
+    },
+    "show_date": {
+      "label": "Date",
+      "description": "Show the date under the time in smaller dots."
+    },
+    "blink_colon": {
+      "label": "Blinking colon",
+      "description": "Hide the colon every other second."
+    },
+    "color": {
+      "label": "Dot color",
+      "description": "Color role of the digits."
+    },
+    "colon_color": {
+      "label": "Colon color",
+      "description": "Color role of the colon; set it to error for a red accent."
+    }
+  }
+}

@@ -35,35 +35,29 @@ sidebar = "full"
 
 [desktop_widgets]
 schema_version = 2
-widget_order = [ "desktop-widget-0000000000000001" ]
+widget_order = [ "desktop-widget-0000000000000002" ]
 
     [desktop_widgets.grid]
     cell_size = 16
     major_interval = 4
     visible = true
 
-    # Big dot-matrix clock on the laptop screen; cx/cy is the widget center in screen pixels
-    [desktop_widgets.widget.desktop-widget-0000000000000001]
-    box_height = 300.0
-    box_width = 560.0
-    cx = 360.0
+    # Dot Clock plugin (home/modules/dot-clock-widget); cx/cy is the widget center in pixels
+    [desktop_widgets.widget.desktop-widget-0000000000000002]
+    box_height = 260.0
+    box_width = 640.0
+    cx = 1166.0
     cy = 330.0
     output = "eDP-1"
     placement_height = 1200.0
     placement_width = 1920.0
     rotation = 0.0
-    type = "clock"
+    type = "vladyslav/dot-clock:clock"
 
-        [desktop_widgets.widget.desktop-widget-0000000000000001.settings]
+        [desktop_widgets.widget.desktop-widget-0000000000000002.settings]
         background_opacity = 0.0
-        background_padding = 0
-        background_radius = 0
-        center_text = false
-        clock_style = "digital"
-        color = "on_surface"
-        font_family = "Dot Clock"
-        format = "{:%H:%M}"
-        shadow = false
+        pitch = 14.0
+        show_date = true
 
 [idle]
 behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
@@ -98,8 +92,9 @@ schema_version = 2
 widget_order = [
     "lockscreen-login-box@HDMI-A-1",
     "lockscreen-login-box@eDP-1",
-    "lockscreen-widget-0000000000000001",
-    "lockscreen-widget-0000000000000002"
+    "lockscreen-widget-0000000000000005",
+    "lockscreen-widget-0000000000000002",
+    "lockscreen-widget-0000000000000006"
 ]
 
     [lockscreen_widgets.grid]
@@ -147,49 +142,45 @@ widget_order = [
         show_keyboard_layout = true
         show_login_button = true
 
-    [lockscreen_widgets.widget.lockscreen-widget-0000000000000001]
-    box_height = 144.0
-    box_width = 256.0
-    cx = 640.0
-    cy = 208.0
-    output = "eDP-1"
-    rotation = 0.0
-    type = "clock"
-
-        [lockscreen_widgets.widget.lockscreen-widget-0000000000000001.settings]
-        background_opacity = 0.0
-        background_padding = 0
-        background_radius = 0
-        center_text = true
-        clock_style = "digital"
-        font_family = "Dot Clock"
-        format = "{:%H:%M}\\n{:%d.%m.%d}"
-
-    [lockscreen_widgets.widget.lockscreen-widget-0000000000000003]
-    box_height = 144.0
-    box_width = 256.0
+    # Dot Clock plugin on the eDP-1 lock screen
+    [lockscreen_widgets.widget.lockscreen-widget-0000000000000005]
+    box_height = 260.0
+    box_width = 640.0
     cx = 960.0
-    cy = 268.0
+    cy = 300.0
+    output = "eDP-1"
+    placement_height = 1200.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "vladyslav/dot-clock:clock"
+
+        [lockscreen_widgets.widget.lockscreen-widget-0000000000000005.settings]
+        background_opacity = 0.0
+        pitch = 14.0
+        show_date = true
+
+    # Dot Clock plugin on the HDMI-A-1 lock screen
+    [lockscreen_widgets.widget.lockscreen-widget-0000000000000006]
+    box_height = 260.0
+    box_width = 640.0
+    cx = 960.0
+    cy = 280.0
     output = "HDMI-A-1"
     placement_height = 1080.0
     placement_width = 1920.0
     rotation = 0.0
-    type = "clock"
+    type = "vladyslav/dot-clock:clock"
 
-        [lockscreen_widgets.widget.lockscreen-widget-0000000000000003.settings]
+        [lockscreen_widgets.widget.lockscreen-widget-0000000000000006.settings]
         background_opacity = 0.0
-        background_padding = 0
-        background_radius = 0
-        center_text = true
-        clock_style = "digital"
-        font_family = "Dot Clock"
-        format = "{:%H:%M}\\n{:%d.%m.%y}"
+        pitch = 14.0
+        show_date = true
 
     [lockscreen_widgets.widget.lockscreen-widget-0000000000000002]
     box_height = 48.0
     box_width = 112.0
     cx = 640.0
-    cy = 296.0
+    cy = 480.0
     output = "eDP-1"
     rotation = 0.0
     type = "weather"
