@@ -1,11 +1,11 @@
 """Freeze Doto at its heaviest weight, add Cyrillic, shrink every dot, add tracking, rename.
 
-Usage: doto-round.py <Doto.ttf> <output.ttf> <family name> <dot scale> <roundness> <tracking> <cyrillic.txt>
+Usage: doto-round.py <Doto.ttf> <output.ttf> <family name> <dot scale> <roundness> <tracking> <glyphs.txt>
 - dot scale below 1 makes each dot smaller around its own center, so the gaps between dots grow
   while the dot grid, and with it the glyph size, stays the same;
 - roundness is Doto's ROND axis: 0 gives square dots, 100 round ones;
 - tracking is added to every advance width, in font units (a digit is 600 wide);
-- cyrillic.txt lists the Cyrillic letters Doto lacks, as copies of Latin glyphs or dot grids
+- glyphs.txt lists glyphs to add (Cyrillic) or replace, as copies of Doto glyphs or dot grids
   (format in its header).
 """
 import copy
@@ -82,13 +82,15 @@ def add_glyphs(font, path):
     outline = dot_outline(font)
     order = font.getGlyphOrder()
     for char, latin, top, rows in parse_glyphs(path):
-        name = f"uni{ord(char):04X}"
+        existing = cmap.get(ord(char))
+        name = existing or f"uni{ord(char):04X}"
         if latin is not None:
             glyph = copy.deepcopy(glyf[cmap[ord(latin)]])
         else:
             glyph = draw_grid(outline, top, rows)
         glyph.recalcBounds(glyf)
-        order.append(name)
+        if existing is None:
+            order.append(name)
         glyf[name] = glyph
         hmtx.metrics[name] = (ADVANCE, getattr(glyph, "xMin", 0))
         for table in font["cmap"].tables:

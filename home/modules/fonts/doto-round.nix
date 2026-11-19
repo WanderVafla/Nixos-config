@@ -1,6 +1,6 @@
 # "Doto Round": Doto frozen at its heaviest weight with round, slightly smaller dots, for clocks.
-# Built from the local files/Doto.ttf by doto-round.py, with the Cyrillic of doto-cyrillic.txt
-# added; a separate family name lets apps pick it
+# Built from the local files/Doto.ttf by doto-round.py, with the glyphs of doto-glyphs.txt
+# (Cyrillic, redrawn A and B) added; a separate family name lets apps pick it
 # directly, because most of them would otherwise render the thin Regular instance.
 { pkgs, ... }:
 
@@ -19,7 +19,7 @@ let
     mkdir -p $out/share/fonts/truetype/doto-round
     ${python}/bin/python3 -I ${./doto-round.py} ${./files/Doto.ttf} \
       $out/share/fonts/truetype/doto-round/DotoRound.ttf "Doto Round" \
-      ${dotScale} ${roundness} ${tracking} ${./doto-cyrillic.txt}
+      ${dotScale} ${roundness} ${tracking} ${./doto-glyphs.txt}
   '';
 in
 {

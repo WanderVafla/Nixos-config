@@ -1,4 +1,6 @@
-# Cyrillic for Doto Round, on Doto's own grid: 5 columns 100 units apart, dots of 90 units.
+# Glyphs added to or replaced in Doto Round, on Doto's own grid: 5 columns 100 units apart,
+# dots of 90 units. Mostly Cyrillic, plus Latin letters redrawn to match it.
+# A character Doto already has is replaced; a new one is added.
 # "= <char> <Latin>" copies a Doto glyph that has the same shape.
 # "= <char> <top>" draws a grid whose first row sits at y = <top>; every next row is 100 lower.
 # Rows: capitals 650..50, lowercase 450..50, descenders down to -150, capital accents at 750.
@@ -22,6 +24,25 @@
 = у y
 = х x
 = і i
+
+# Latin A and B redrawn like their Cyrillic twins: round top on A, no serifs on B.
+= A 650
+.###.
+#...#
+#...#
+#####
+#...#
+#...#
+#...#
+
+= B 650
+####.
+#...#
+#...#
+####.
+#...#
+#...#
+####.
 
 # Not copies of A and B: Cyrillic А gets a round top, В loses B's serifs.
 = А 650
