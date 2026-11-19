@@ -79,6 +79,11 @@ in
         # Keeps ANDROID_SERIAL (host:adbPort) connected: after a phone reboot the
         # daemon finds the Wireless debugging port and runs `adb tcpip` through it.
         "PHONE_NOTIFY_ADB_PORT=${toString config.phone.adbPort}"
+        # While the phone plays music it streams its audio spectrum here, for dot-spectrum.
+        "PHONE_NOTIFY_SPECTRUM_LISTEN=0.0.0.0:${toString config.phone.spectrum.port}"
+      ] ++ lib.optionals (config.phone.spectrum.plugin != null) [
+        "PHONE_NOTIFY_SPECTRUM_PLUGIN=${config.phone.spectrum.plugin}"
+      ] ++ [
         # The proximity lock reads `tailscale status` and locks via `noctalia msg session lock`;
         # the ADB keeper runs `adb`.
         "PATH=${lib.makeBinPath [ pkgs.tailscale pkgs.noctalia pkgs.android-tools ]}"

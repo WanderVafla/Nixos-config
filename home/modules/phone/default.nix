@@ -88,5 +88,18 @@
       default = 47101;
       description = "Port of the phone app's command server (media controls); fixed in CommandServer.kt.";
     };
+
+    spectrum = {
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 47102;
+        description = "UDP port the daemon receives the phone's audio spectrum on.";
+      };
+      plugin = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = "vladyslav/dot-spectrum:spectrum";
+        description = "Noctalia plugin entry the phone's spectrum is handed to; null turns the spectrum off.";
+      };
+    };
   };
 }

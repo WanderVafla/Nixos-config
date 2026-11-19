@@ -36,11 +36,20 @@ The spectrum comes from the output sink: with the output muted the matrix stays 
 
 ## Music playing elsewhere
 
-When a player reports `Playing` but the sink is silent (Spotify Connect to the phone, the
-phone's own player mirrored as MPRIS `phone`), the bar widget relays a made-up spectrum from
-`synth.luau` instead: slow waves per band and a soft beat on the bass. It does not follow the
-real music. Real audio takes over within 400 ms. While nothing plays the widget only checks the
-player once a second. Turn it off with `simulate_when_silent = false` on the bar widget.
+When the sink is silent, the bar widget takes frames from two other sources, in this order:
+
+1. **The phone.** While the phone plays music (its own player, or Spotify Connect to it), the
+   `phone-notify` daemon (`home/modules/phone`) passes the phone's real spectrum in as the IPC
+   event `phone-spectrum` (`onIpc`), about 20 frames a second.
+2. **Made up.** If no phone frames come but a player reports `Playing`, `synth.luau` makes a
+   spectrum: slow waves per band and a soft beat on the bass. It does not follow the music.
+   Turn it off with `simulate_when_silent = false` on the bar widget.
+
+Real local audio always wins and takes over within 400 ms. While nothing plays the widget only
+checks the player once a second.
+
+Test the phone path by hand:
+`noctalia msg plugin vladyslav/dot-spectrum:spectrum all phone-spectrum 1,0.8,0.6,0.5,0.4,0.3,0.3,0.2,0.2,0.1,0.1,0.1,0.1`
 
 ## Setting up
 

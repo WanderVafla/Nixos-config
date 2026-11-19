@@ -15,7 +15,7 @@ its daemon is pulled in through the `phone-notify` flake input.
 | [`adb.nix`](adb.nix) | ADB over Tailscale, scrcpy and the `phone-*` helper scripts |
 | [`syncthing.nix`](syncthing.nix) | Syncthing device and shared folders |
 | [`watch.nix`](watch.nix) | `phone-watch` timer: reachability and Syncthing status for the widget |
-| [`notify.nix`](notify.nix) | `phone-notify` daemon: notifications, battery, media, proximity lock |
+| [`notify.nix`](notify.nix) | `phone-notify` daemon: notifications, battery, media, audio spectrum, proximity lock |
 | [`noctalia-plugins/`](noctalia-plugins) | Local Noctalia plugin source with the `vladyslav/phone` widget and panel |
 
 ## Options
@@ -30,6 +30,8 @@ All under `phone.*`, defined in `default.nix`:
 | `lowBattery` | `20` | Battery percentage that triggers a warning |
 | `notifyPort` | `47100` | Port of the `phone-notify` daemon on the laptop |
 | `mediaPort` | `47101` | Port of the phone app's command server (fixed in the app) |
+| `spectrum.port` | `47102` | UDP port the phone's audio spectrum arrives on |
+| `spectrum.plugin` | `vladyslav/dot-spectrum:spectrum` | Noctalia plugin entry the spectrum goes to; `null` turns it off |
 | `proximityLock.mode` | `off` | Default lock mode: `off`, `tailscale` or `bluetooth` |
 | `proximityLock.minRssi` | `-75` | Weakest BLE beacon signal (dBm) that counts as near |
 | `proximityLock.interval` | `15` | Seconds between proximity checks |

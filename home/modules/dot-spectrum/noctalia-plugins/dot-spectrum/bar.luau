@@ -1,8 +1,9 @@
 --!strict
 -- Bar widget: a small dot equalizer. It is also the only place Noctalia delivers the audio
 -- spectrum to, so it relays every frame to the desktop widgets through the plugin state.
--- When a player is playing but the laptop hears nothing (music on the phone), it relays a
--- made-up spectrum from synth.luau instead, so the widgets keep moving.
+-- When the laptop hears nothing, the phone's own spectrum (sent by the phone-notify daemon as
+-- the IPC event "phone-spectrum") takes over; without that, while a player is playing, a
+-- made-up spectrum from synth.luau keeps the widgets moving. Real local audio always wins.
 
 local channel = require("./channel.luau")
 local synth = require("./synth.luau")
@@ -13,12 +14,13 @@ local DOT = 3
 local GAP = 1
 local FRAME_MS = 50 -- relay and redraw at most 20 times a second
 local IDLE_MS = 1000 -- how often to check for a playing player while nothing moves
-local REAL_GRACE_MS = 400 -- real audio this recent keeps the made-up spectrum off
+local REAL_GRACE_MS = 400 -- real audio or a phone frame this recent keeps the next source off
 
 local color = noctalia.getConfig("color") or "on_surface"
 local simulate = noctalia.getConfig("simulate_when_silent") ~= false
 local lastFrame = 0
 local lastRealAudio = -REAL_GRACE_MS
+local lastPhoneFrame = -REAL_GRACE_MS
 local synthesizing = false
 
 local function parse(values: string): { number }
@@ -64,14 +66,31 @@ function onAudioSpectrum(values: string, state: string)
 	local active = string.sub(state, 1, 1) == "1"
 	if active then
 		lastRealAudio = now
-	elseif synthesizing then
-		return -- the silent frames would fight the made-up ones
+	elseif synthesizing or now - lastPhoneFrame < REAL_GRACE_MS then
+		return -- the silent frames would fight the phone's or the made-up ones
 	end
 	if now - lastFrame < FRAME_MS then
 		return
 	end
 	lastFrame = now
 	relay(parse(values), active)
+end
+
+-- Spectrum frames of music playing on the phone, about 20 a second while it plays.
+function onIpc(event: string, payload: string)
+	if event ~= "phone-spectrum" then
+		return
+	end
+	local now = noctalia.nowMs()
+	if now - lastRealAudio < REAL_GRACE_MS then
+		return
+	end
+	lastPhoneFrame = now
+	if now - lastFrame < FRAME_MS then
+		return
+	end
+	lastFrame = now
+	relay(parse(payload), true)
 end
 
 local function playerPlaying(): boolean
@@ -82,11 +101,12 @@ end
 -- Runs every IDLE_MS, or every FRAME_MS while the made-up spectrum is on.
 function update()
 	local now = noctalia.nowMs()
-	local want = simulate and now - lastRealAudio >= REAL_GRACE_MS and playerPlaying()
+	local heard = now - lastRealAudio < REAL_GRACE_MS or now - lastPhoneFrame < REAL_GRACE_MS
+	local want = simulate and not heard and playerPlaying()
 	if want then
 		relay(synth.frame(now), true)
-	elseif synthesizing then
-		relay(table.create(channel.BANDS, 0), false)
+	elseif synthesizing and not heard then
+		relay(table.create(channel.BANDS, 0), false) -- music stopped: settle the dots
 	end
 	if want ~= synthesizing then
 		synthesizing = want
