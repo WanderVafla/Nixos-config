@@ -46,4 +46,5 @@ the card behind it.
 
 After editing the Luau files: `noctalia msg plugins disable vladyslav/dot-spectrum && noctalia msg plugins enable vladyslav/dot-spectrum`.
 
-Doto has no Cyrillic, so Russian titles fall back to another font in the player card.
+The title font, Doto Round, carries the Cyrillic of `fonts/doto-cyrillic.txt`; the card raises
+Russian and Ukrainian titles to capitals itself, since `string.upper` only knows ASCII.

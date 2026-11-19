@@ -32,6 +32,23 @@ local active = false
 local phase = 0.0
 local lastRender = 0
 
+-- string.upper only knows ASCII; this also raises Russian and Ukrainian letters.
+local CYRILLIC_UPPER: { [number]: number } = { [0x451] = 0x401, [0x454] = 0x404, [0x456] = 0x406, [0x457] = 0x407, [0x491] = 0x490 }
+local function upper(text: string): string
+	local out = {}
+	for _, code in utf8.codes(text) do
+		if code >= 0x430 and code <= 0x44F then
+			code -= 0x20
+		elseif CYRILLIC_UPPER[code] then
+			code = CYRILLIC_UPPER[code]
+		elseif code < 0x80 then
+			code = string.byte(string.upper(string.char(code)))
+		end
+		table.insert(out, utf8.char(code))
+	end
+	return table.concat(out)
+end
+
 local function clock(ms: number): string
 	local total = math.max(0, math.floor(ms / 1000))
 	return string.format("%d:%02d", total // 60, total % 60)
@@ -56,16 +73,16 @@ local function render()
 	local player = noctalia.mediaPlayer()
 	local text = {}
 	if player ~= nil and player.title ~= nil and player.title ~= "" then
-		local who = string.upper(player.identity or "player")
+		local who = upper(player.identity or "player")
 		local artists = if type(player.artists) == "table" then table.concat(player.artists, ", ") else ""
 		local byline = artists .. (if player.album ~= nil and player.album ~= "" then " — " .. player.album else "")
 		local length = player.lengthMs or 0
 		local position = player.positionMs or 0
 		local fraction = if length > 0 then math.clamp(position / length, 0, 1) else 0
-		local status = if player.status == "Playing" then "NOW PLAYING" else string.upper(player.status or "")
+		local status = if player.status == "Playing" then "NOW PLAYING" else upper(player.status or "")
 		text = {
 			ui.label({ text = status .. " · " .. who, fontFamily = textFont, fontSize = 11, color = dimColor }),
-			ui.label({ text = string.upper(player.title), fontFamily = titleFont, fontSize = 40, color = color, maxLines = 2, maxWidth = 360 }),
+			ui.label({ text = upper(player.title), fontFamily = titleFont, fontSize = 40, color = color, maxLines = 2, maxWidth = 360 }),
 			ui.label({ text = byline, fontFamily = textFont, fontSize = 13, color = dimColor, maxLines = 1, maxWidth = 360 }),
 			ui.spacer({ height = 18 }),
 			progressDots(fraction),
