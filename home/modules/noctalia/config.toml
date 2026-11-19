@@ -63,6 +63,7 @@ widget_order = [ "desktop-widget-0000000000000001" ]
         color = "on_surface"
         font_family = "Dot Clock"
         format = "{:%H:%M}"
+        shadow = false
 
 [idle]
 behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]

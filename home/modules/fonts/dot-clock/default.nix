@@ -5,7 +5,7 @@
 
 let
   # Dot diameter relative to a grid cell: 1.0 makes neighbouring dots touch.
-  dotScale = "1.0";
+  dotScale = "0.8";
   # Extra space after every character, in font units (a grid cell is 100).
   tracking = "-100";
 
