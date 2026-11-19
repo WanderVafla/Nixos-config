@@ -5,6 +5,7 @@
   imports = [
     ./doto.nix
     ./doto-round.nix
+    ./dot-clock
     ./google-fonts.nix
   ];
 

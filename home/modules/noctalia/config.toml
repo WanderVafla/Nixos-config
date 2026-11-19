@@ -61,7 +61,7 @@ widget_order = [ "desktop-widget-0000000000000001" ]
         center_text = false
         clock_style = "digital"
         color = "on_surface"
-        font_family = "Doto Round"
+        font_family = "Dot Clock"
         format = "{:%H:%M}"
 
 [idle]
@@ -161,7 +161,7 @@ widget_order = [
         background_radius = 0
         center_text = true
         clock_style = "digital"
-        font_family = "Doto Round"
+        font_family = "Dot Clock"
         format = "{:%H:%M}\\n{:%d.%m.%d}"
 
     [lockscreen_widgets.widget.lockscreen-widget-0000000000000003]
@@ -181,7 +181,7 @@ widget_order = [
         background_radius = 0
         center_text = true
         clock_style = "digital"
-        font_family = "Doto Round"
+        font_family = "Dot Clock"
         format = "{:%H:%M}\\n{:%d.%m.%y}"
 
     [lockscreen_widgets.widget.lockscreen-widget-0000000000000002]
