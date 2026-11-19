@@ -3,6 +3,7 @@
 
 {
   imports = [
+    ./doto.nix
     ./google-fonts.nix
   ];
 
