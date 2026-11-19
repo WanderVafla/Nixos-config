@@ -5,6 +5,7 @@
     ./hypr.nix
     ./noctalia.nix
     ./kitty.nix
+    ./fonts
     ./cursor.nix
     ./zsh.nix
     ./zen-browser.nix

@@ -268,12 +268,9 @@
     };
   };
 
-  fonts.packages = with pkgs; [
-    font-awesome_4
-    dejavu_fonts
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.symbols-only
-  ];
+  # User fonts live in home/modules/fonts. The default set (DejaVu, Liberation, Noto emoji)
+  # stays system-wide so the greeter and other system services still have text fonts.
+  fonts.enableDefaultPackages = true;
 
   services.displayManager = {
     sddm = {
