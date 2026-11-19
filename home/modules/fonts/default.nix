@@ -4,6 +4,7 @@
 {
   imports = [
     ./doto.nix
+    ./doto-round.nix
     ./google-fonts.nix
   ];
 
