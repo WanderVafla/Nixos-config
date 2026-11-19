@@ -20,7 +20,7 @@ notifications that arrived since you last clicked it, like the Nothing-style moc
   Noctalia panel does not lower it.
 - A click runs `noctalia msg panel-toggle control-center notifications`.
 - A right click toggles Do Not Disturb (`noctalia msg notification-dnd-toggle`); while it is on,
-  the widget shows `bell-off` instead of the dot.
+  the widget shows a crossed-out dot (`circle-off`).
 
 ## Settings
 

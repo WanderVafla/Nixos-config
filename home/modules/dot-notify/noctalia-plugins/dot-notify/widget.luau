@@ -22,7 +22,7 @@ local function show()
 	local dnd = type(state) == "table" and state.dnd == true
 
 	if dnd then
-		barWidget.setGlyph("bell-off")
+		barWidget.setGlyph("circle-off")
 		barWidget.setGlyphColor("on_surface_variant")
 	else
 		barWidget.setGlyph("point-filled")
