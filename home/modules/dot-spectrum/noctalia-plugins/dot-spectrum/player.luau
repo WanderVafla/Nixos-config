@@ -105,7 +105,7 @@ local function render()
 		radius = 18,
 		fill = if transparent then "#00000000" else "surface",
 		border = "outline_variant",
-		borderWidth = 1,
+		borderWidth = if transparent then 0 else 1,
 	}, {
 		disc.render({ size = discSize, color = color, dimColor = dimColor, accent = accent }, levels, phase),
 		ui.column({ gap = 6, align = "start" }, text),

@@ -8,7 +8,7 @@ of the Nothing-style mockup.
   accent center dot (each ring swells with its band and the pattern turns slowly while music
   plays), then the player, the title in Doto Round, artist and album, a 30-dot progress bar with
   the playhead in the accent color, and the times. Data from `noctalia.mediaPlayer()`.
-  `transparent_background` drops the card's fill and keeps its outline.
+  `transparent_background` drops the card's fill and outline.
 - **Desktop widget** `matrix`: a round 25x25 dot matrix like the Glyph Matrix of the Nothing
   Phone (3). Ring k (from the center out) shows frequency band k, bass in the middle; the louder
   the band, the more of its dots light up, in a fixed scattered order. The center dot uses the
