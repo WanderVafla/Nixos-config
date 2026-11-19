@@ -1,6 +1,7 @@
 --!strict
 -- Bar widget: a dot that turns red with a count when notifications arrived since the last click.
--- A click resets the count and opens the notifications tab of the control center.
+-- A click resets the count and opens the notifications tab of the control center;
+-- a right click toggles Do Not Disturb, like the built-in notifications widget.
 
 local channel = require("./channel.luau")
 
@@ -30,9 +31,8 @@ local function show()
 	barWidget.setText(if showCount and unseen > 0 then tostring(unseen) else "")
 
 	local tip = if unseen == 1 then "1 new notification" else `{unseen} new notifications`
-	if dnd then
-		tip ..= "\nDo Not Disturb is on"
-	end
+	tip ..= if dnd then "\nDo Not Disturb is on" else ""
+	tip ..= "\nRight click: Do Not Disturb"
 	barWidget.setTooltip(tip)
 end
 
@@ -45,4 +45,8 @@ show()
 function onClick()
 	channel.request("reset")
 	noctalia.runAsync("noctalia msg panel-toggle control-center notifications", function(_result) end)
+end
+
+function onRightClick()
+	channel.request("toggle-dnd")
 end

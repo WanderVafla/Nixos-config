@@ -19,7 +19,8 @@ notifications that arrived since you last clicked it, like the Nothing-style moc
 - The count resets only when you click the widget. Dismissing notifications inside the
   Noctalia panel does not lower it.
 - A click runs `noctalia msg panel-toggle control-center notifications`.
-- With Do Not Disturb on, the widget shows `bell-off` instead of the dot.
+- A right click toggles Do Not Disturb (`noctalia msg notification-dnd-toggle`); while it is on,
+  the widget shows `bell-off` instead of the dot.
 
 ## Settings
 

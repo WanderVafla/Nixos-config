@@ -38,9 +38,16 @@ local function pollDnd()
 end
 
 local function onRequest(request: any)
-	if type(request) == "table" and request.kind == "reset" then
+	if type(request) ~= "table" then
+		return
+	end
+	if request.kind == "reset" then
 		unseen = 0
 		publish()
+	elseif request.kind == "toggle-dnd" then
+		noctalia.runAsync("noctalia msg notification-dnd-toggle", function(_result)
+			pollDnd()
+		end)
 	end
 end
 

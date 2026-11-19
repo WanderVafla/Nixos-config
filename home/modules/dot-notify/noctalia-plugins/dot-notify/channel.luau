@@ -1,7 +1,7 @@
 --!strict
 -- Shared state keys between the counter service and the bar widget.
 --   COUNT    written by the service: { unseen: number, dnd: boolean }
---   REQUEST  written by the widget: { kind = "reset", nonce = ... }
+--   REQUEST  written by the widget: { kind = "reset" | "toggle-dnd", nonce = ... }
 
 local M = {}
 
