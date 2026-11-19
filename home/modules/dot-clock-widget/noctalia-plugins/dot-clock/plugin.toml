@@ -33,6 +33,18 @@ entry = "widget.luau"
     ]
 
     [[desktop_widget.setting]]
+    key = "align"
+    type = "select"
+    label_key = "settings.align.label"
+    description_key = "settings.align.description"
+    default = "left"
+    options = [
+        { value = "left", label_key = "settings.align.left" },
+        { value = "center", label_key = "settings.align.center" },
+        { value = "right", label_key = "settings.align.right" },
+    ]
+
+    [[desktop_widget.setting]]
     key = "pitch"
     type = "double"
     label_key = "settings.pitch.label"
@@ -85,7 +97,7 @@ entry = "widget.luau"
     min = 0.0
     max = 1.0
     step = 0.05
-    visible_when = { key = "show_date", values = [true] }
+    visible_when = { key = "align", values = ["left"] }
 
     [[desktop_widget.setting]]
     key = "blink_colon"

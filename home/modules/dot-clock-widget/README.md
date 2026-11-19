@@ -20,6 +20,7 @@ Set per widget in the Noctalia widget editor (or in `noctalia/config.toml`):
 | Key | Default | Meaning |
 |---|---|---|
 | `layout` | horizontal | `vertical` stacks hours, minutes and seconds without colons |
+| `align` | left | `center` or `right` aligns every line (time and date) on the widest one; `date_align` only works with `left` |
 | `pitch` | 12 | Distance between two dot centers in pixels; sets the clock size |
 | `dot_scale` | 0.6 | Dot diameter relative to `pitch` |
 | `char_gap` | 1 | Empty grid cells between characters |

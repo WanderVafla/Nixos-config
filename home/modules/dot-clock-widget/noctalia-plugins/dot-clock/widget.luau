@@ -18,6 +18,7 @@ local config = {
 	dotScale = conf("dot_scale", 0.6),
 	charGap = conf("char_gap", 1.0),
 	layout = conf("layout", "horizontal"),
+	align = conf("align", "left"),
 	showSeconds = conf("show_seconds", false),
 	showDate = conf("show_date", false),
 	dateAlign = conf("date_align", 0.0),
@@ -74,20 +75,25 @@ local function render()
 		table.insert(lines, matrix.line(text, glyphs, style))
 		timeWidth = math.max(timeWidth, matrix.width(text, glyphs, style))
 	end
-	local timeBlock = ui.column({ gap = config.pitch, align = "start" }, lines)
+	-- align lines up every line (time and date) on its left edge, center or right edge.
+	local flexAlign = if config.align == "center" then "center" elseif config.align == "right" then "end" else "start"
+	local timeBlock = ui.column({ gap = config.pitch, align = flexAlign }, lines)
 	lines = { timeBlock }
 	if config.showDate then
 		local small = table.clone(style)
 		small.pitch = config.pitch / 2
 		small.hideColon = false
 		-- date_align moves the date from the left edge (0) through the center (0.5) to the right edge (1).
-		local offset = (timeWidth - matrix.width(date, glyphs, small)) * config.dateAlign
+		-- With left alignment, date_align still moves the date under the time.
+		local offset = if config.align == "left"
+			then (timeWidth - matrix.width(date, glyphs, small)) * config.dateAlign
+			else 0
 		table.insert(lines, ui.row({ gap = 0 }, {
 			ui.box({ width = math.max(0, offset), height = 1, fill = "#00000000" }),
 			matrix.line(date, glyphs, small),
 		}))
 	end
-	desktopWidget.render(ui.column({ gap = config.pitch * 2, align = "start" }, lines))
+	desktopWidget.render(ui.column({ gap = config.pitch * 2, align = flexAlign }, lines))
 end
 
 noctalia.setUpdateInterval(1000)
