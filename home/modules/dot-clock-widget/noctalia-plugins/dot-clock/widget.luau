@@ -19,6 +19,7 @@ local config = {
 	charGap = conf("char_gap", 1.0),
 	showSeconds = conf("show_seconds", false),
 	showDate = conf("show_date", false),
+	dateAlign = conf("date_align", 0.0),
 	blinkColon = conf("blink_colon", false),
 	color = conf("color", "on_surface"),
 	colonColor = conf("colon_color", "on_surface"),
@@ -64,7 +65,12 @@ local function render()
 		small.pitch = config.pitch / 2
 		small.colonColor = config.color
 		small.hideColon = false
-		table.insert(lines, matrix.line(date, glyphs, small))
+		-- date_align moves the date from the left edge (0) through the center (0.5) to the right edge (1).
+		local offset = (matrix.width(time, glyphs, style) - matrix.width(date, glyphs, small)) * config.dateAlign
+		table.insert(lines, ui.row({ gap = 0 }, {
+			ui.box({ width = math.max(0, offset), height = 1, fill = "#00000000" }),
+			matrix.line(date, glyphs, small),
+		}))
 	end
 	desktopWidget.render(ui.column({ gap = config.pitch * 2, align = "start" }, lines))
 end

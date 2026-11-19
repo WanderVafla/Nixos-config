@@ -33,6 +33,23 @@ local function glyphNode(rows: { string }, style: Style, color: string, hidden: 
 	return ui.column({ gap = gap }, rowNodes)
 end
 
+-- Width in pixels of the line M.line draws for the same text and style.
+function M.width(text: string, glyphs: { [string]: { string } }, style: Style): number
+	local dot = math.max(1, math.floor(style.pitch * style.dotScale + 0.5))
+	local gap = style.pitch - dot
+	local between = (1 + style.charGap) * style.pitch - dot
+	local total, count = 0, 0
+	for i = 1, #text do
+		local rows = glyphs[string.sub(text, i, i)]
+		if rows then
+			local cols = #rows[1]
+			total += cols * dot + (cols - 1) * gap
+			count += 1
+		end
+	end
+	return total + math.max(0, count - 1) * between
+end
+
 function M.line(text: string, glyphs: { [string]: { string } }, style: Style)
 	local dot = math.max(1, math.floor(style.pitch * style.dotScale + 0.5))
 	-- Center distance between the last dot of one character and the first of the next.

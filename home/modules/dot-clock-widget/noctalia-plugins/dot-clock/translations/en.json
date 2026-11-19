@@ -38,6 +38,10 @@
     "colon_color": {
       "label": "Colon color",
       "description": "Color role of the colon; set it to error for a red accent."
+    },
+    "date_align": {
+      "label": "Date position",
+      "description": "0 puts the date under the left edge of the time, 0.5 centers it, 1 aligns it to the right edge."
     }
   }
 }

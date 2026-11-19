@@ -66,6 +66,17 @@ entry = "widget.luau"
     default = false
 
     [[desktop_widget.setting]]
+    key = "date_align"
+    type = "double"
+    label_key = "settings.date_align.label"
+    description_key = "settings.date_align.description"
+    default = 0.0
+    min = 0.0
+    max = 1.0
+    step = 0.05
+    visible_when = { key = "show_date", values = [true] }
+
+    [[desktop_widget.setting]]
     key = "blink_colon"
     type = "bool"
     label_key = "settings.blink_colon.label"
