@@ -1,0 +1,33 @@
+id = "vladyslav/dot-notify"
+name = "Dot Notify"
+version = "0.1.0"
+plugin_api = 33
+author = "vladyslav"
+license = "MIT"
+icon = "point-filled"
+description = "Bar widget: a red dot with the number of notifications since you last looked."
+tags = [ "notifications", "utility" ]
+dependencies = [ "dbus-monitor", "noctalia" ]
+
+# Counts notifications on the session bus, so the count keeps growing while no widget is shown.
+[[service]]
+id = "counter"
+entry = "service.luau"
+
+[[widget]]
+id = "dot"
+entry = "widget.luau"
+
+    [[widget.setting]]
+    key = "dot_color"
+    type = "color"
+    label_key = "settings.dot_color.label"
+    description_key = "settings.dot_color.description"
+    default = "error"
+
+    [[widget.setting]]
+    key = "show_count"
+    type = "bool"
+    label_key = "settings.show_count.label"
+    description_key = "settings.show_count.description"
+    default = true

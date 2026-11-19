@@ -1,0 +1,15 @@
+# Catalog of the local Noctalia plugin source: one [[plugin]] row per subdirectory.
+# Keep the fields in sync with each plugin's plugin.toml.
+
+[[plugin]]
+id = "vladyslav/dot-notify"
+name = "Dot Notify"
+version = "0.1.0"
+updated_at = 1795086600
+added_at = 1795086600
+author = "vladyslav"
+license = "MIT"
+icon = "point-filled"
+description = "Bar widget: a red dot with the number of notifications since you last looked."
+plugin_api = 33
+tags = ["notifications", "utility"]

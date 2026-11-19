@@ -1,0 +1,12 @@
+{
+  "settings": {
+    "dot_color": {
+      "label": "Dot color",
+      "description": "Color role of the dot while there are unseen notifications."
+    },
+    "show_count": {
+      "label": "Count",
+      "description": "Show the number of unseen notifications next to the dot."
+    }
+  }
+}

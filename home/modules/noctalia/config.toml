@@ -9,7 +9,7 @@ order = [ "default" ]
     [bar.default]
     capsule_thickness = 0.99999998137354851
     center = [ "weather", "date", "clock" ]
-    end = [ "group:g1", "volume", "battery", "session", "notifications" ]
+    end = [ "group:g1", "volume", "battery", "session", "dot-notify" ]
     padding = 10
     scale = 0.80000000447034836
     start = [ "nix-monitor", "keyboard_layout", "workspaces", "taskbar", "active_window" ]
@@ -287,6 +287,10 @@ capsule_radius = "auto"
 focused_color = "tertiary"
 group_by_workspace = true
 hide_empty_workspaces = true
+
+# Red dot with the unseen count, from home/modules/dot-notify
+[widget.dot-notify]
+type = "vladyslav/dot-notify:dot"
 
 [widget.weather]
 color = "tertiary"
