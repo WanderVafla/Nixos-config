@@ -4,6 +4,10 @@ Noctalia plugin `vladyslav/dot-spectrum`: an audio visualizer made of dots, afte
 of the Nothing-style mockup.
 
 - **Bar widget** `spectrum`: a 7x4 dot equalizer.
+- **Desktop widget** `player`: the music card of the mockup. A disc of 9 dot rings around an
+  accent center dot (each ring swells with its band and the pattern turns slowly while music
+  plays), then the player, the title in Doto Round, artist and album, a 30-dot progress bar with
+  the playhead in the accent color, and the times. Data from `noctalia.mediaPlayer()`.
 - **Desktop widget** `matrix`: a round 25x25 dot matrix like the Glyph Matrix of the Nothing
   Phone (3). Ring k (from the center out) shows frequency band k, bass in the middle; the louder
   the band, the more of its dots light up, in a fixed scattered order. The center dot uses the
@@ -15,6 +19,8 @@ of the Nothing-style mockup.
 | `dot-spectrum/plugin.toml` | Manifest: bar and desktop widgets and their settings |
 | `dot-spectrum/bar.luau` | Receives the spectrum, draws the equalizer, relays frames (20 per second) |
 | `dot-spectrum/matrix.luau` | Draws the round matrix from the relayed frames |
+| `dot-spectrum/player.luau` | Music card: player data, text, progress dots |
+| `dot-spectrum/disc.luau` | Dot rings placed with translateX/Y (rows in a column, each shifted back by the rows above) |
 | `dot-spectrum/channel.luau` | Shared state key and band count |
 | `dot-spectrum/translations/en.json` | Setting labels |
 
@@ -34,8 +40,10 @@ noctalia msg plugins enable vladyslav/dot-spectrum
 noctalia msg config-set widget.dot-spectrum '{ type = "vladyslav/dot-spectrum:spectrum", audio_spectrum = true, audio_spectrum_bands = 13 }'
 ```
 
-Then put `dot-spectrum` in a bar and add "Dot Spectrum" in the desktop widget editor.
+Then put `dot-spectrum` in a bar and add the matrix or the player in the desktop widget editor.
 `noctalia/config.toml` already does both. Set `background = false` on the desktop widget to drop
 the card behind it.
 
 After editing the Luau files: `noctalia msg plugins disable vladyslav/dot-spectrum && noctalia msg plugins enable vladyslav/dot-spectrum`.
+
+Doto has no Cyrillic, so Russian titles fall back to another font in the player card.

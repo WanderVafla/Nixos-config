@@ -26,7 +26,23 @@
     },
     "accent_color": {
       "label": "Accent color",
-      "description": "Color role of the center dot."
+      "description": "Color role of the center dot, the marked dots and the playhead."
+    },
+    "disc_size": {
+      "label": "Disc size",
+      "description": "Diameter of the dot disc in pixels."
+    },
+    "dim_color": {
+      "label": "Secondary color",
+      "description": "Color role of every other ring and of the small text."
+    },
+    "title_font": {
+      "label": "Title font",
+      "description": "Font of the track title."
+    },
+    "text_font": {
+      "label": "Text font",
+      "description": "Font of the small text."
     }
   }
 }

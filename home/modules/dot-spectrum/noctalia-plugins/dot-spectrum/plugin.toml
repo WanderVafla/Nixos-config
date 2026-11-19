@@ -86,3 +86,55 @@ entry = "matrix.luau"
     label_key = "settings.accent_color.label"
     description_key = "settings.accent_color.description"
     default = "error"
+
+# The music card of the mockup: dot disc, title in Doto Round, dot progress bar.
+[[desktop_widget]]
+id = "player"
+entry = "player.luau"
+
+    [[desktop_widget.setting]]
+    key = "disc_size"
+    type = "double"
+    label_key = "settings.disc_size.label"
+    description_key = "settings.disc_size.description"
+    default = 240.0
+    min = 100.0
+    max = 500.0
+    step = 10.0
+
+    [[desktop_widget.setting]]
+    key = "color"
+    type = "color"
+    label_key = "settings.color.label"
+    description_key = "settings.color.description"
+    default = "on_surface"
+
+    [[desktop_widget.setting]]
+    key = "dim_color"
+    type = "color"
+    label_key = "settings.dim_color.label"
+    description_key = "settings.dim_color.description"
+    default = "on_surface_variant"
+
+    [[desktop_widget.setting]]
+    key = "accent_color"
+    type = "color"
+    label_key = "settings.accent_color.label"
+    description_key = "settings.accent_color.description"
+    default = "error"
+
+    [[desktop_widget.setting]]
+    key = "title_font"
+    type = "string"
+    label_key = "settings.title_font.label"
+    description_key = "settings.title_font.description"
+    default = "Doto Round"
+    advanced = true
+
+    [[desktop_widget.setting]]
+    key = "text_font"
+    type = "string"
+    label_key = "settings.text_font.label"
+    description_key = "settings.text_font.description"
+    default = "Space Mono"
+    advanced = true
