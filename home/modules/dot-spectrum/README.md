@@ -19,6 +19,7 @@ of the Nothing-style mockup.
 | `noctalia-plugins/catalog.toml` | Catalog of this local plugin source |
 | `dot-spectrum/plugin.toml` | Manifest: bar and desktop widgets and their settings |
 | `dot-spectrum/bar.luau` | Receives the spectrum, draws the equalizer, relays frames (20 per second) |
+| `dot-spectrum/synth.luau` | Made-up spectrum for music the laptop cannot hear |
 | `dot-spectrum/matrix.luau` | Draws the round matrix from the relayed frames |
 | `dot-spectrum/player.luau` | Music card: player data, text, progress dots |
 | `dot-spectrum/disc.luau` | Dot rings placed with translateX/Y (rows in a column, each shifted back by the rows above) |
@@ -32,6 +33,14 @@ bar widget's config has `audio_spectrum = true`. The desktop matrix therefore ne
 widget somewhere in a bar; it reads the frames from `noctalia.state`.
 
 The spectrum comes from the output sink: with the output muted the matrix stays still.
+
+## Music playing elsewhere
+
+When a player reports `Playing` but the sink is silent (Spotify Connect to the phone, the
+phone's own player mirrored as MPRIS `phone`), the bar widget relays a made-up spectrum from
+`synth.luau` instead: slow waves per band and a soft beat on the bass. It does not follow the
+real music. Real audio takes over within 400 ms. While nothing plays the widget only checks the
+player once a second. Turn it off with `simulate_when_silent = false` on the bar widget.
 
 ## Setting up
 

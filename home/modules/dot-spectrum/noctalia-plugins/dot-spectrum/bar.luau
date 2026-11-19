@@ -1,17 +1,25 @@
 --!strict
 -- Bar widget: a small dot equalizer. It is also the only place Noctalia delivers the audio
--- spectrum to, so it relays every frame to the desktop matrix through the plugin state.
+-- spectrum to, so it relays every frame to the desktop widgets through the plugin state.
+-- When a player is playing but the laptop hears nothing (music on the phone), it relays a
+-- made-up spectrum from synth.luau instead, so the widgets keep moving.
 
 local channel = require("./channel.luau")
+local synth = require("./synth.luau")
 
 local COLUMNS = 7
 local ROWS = 4
 local DOT = 3
 local GAP = 1
 local FRAME_MS = 50 -- relay and redraw at most 20 times a second
+local IDLE_MS = 1000 -- how often to check for a playing player while nothing moves
+local REAL_GRACE_MS = 400 -- real audio this recent keeps the made-up spectrum off
 
 local color = noctalia.getConfig("color") or "on_surface"
+local simulate = noctalia.getConfig("simulate_when_silent") ~= false
 local lastFrame = 0
+local lastRealAudio = -REAL_GRACE_MS
+local synthesizing = false
 
 local function parse(values: string): { number }
 	local bands = {}
@@ -45,18 +53,48 @@ local function render(bands: { number }, active: boolean)
 	barWidget.render(ui.row({ gap = GAP, align = "end" }, columns))
 end
 
+local function relay(bands: { number }, active: boolean)
+	noctalia.state.set(channel.FRAME, { bands = bands, active = active })
+	render(bands, active)
+end
+
 function onAudioSpectrum(values: string, state: string)
 	local now = noctalia.nowMs()
+	-- state is "<audio active>,<a player is playing>", each "1" or "0".
+	local active = string.sub(state, 1, 1) == "1"
+	if active then
+		lastRealAudio = now
+	elseif synthesizing then
+		return -- the silent frames would fight the made-up ones
+	end
 	if now - lastFrame < FRAME_MS then
 		return
 	end
 	lastFrame = now
-	local bands = parse(values)
-	-- state is "<audio active>,<a player is playing>", each "1" or "0".
-	local active = string.sub(state, 1, 1) == "1"
-	noctalia.state.set(channel.FRAME, { bands = bands, active = active })
-	render(bands, active)
+	relay(parse(values), active)
 end
+
+local function playerPlaying(): boolean
+	local player = noctalia.mediaPlayer()
+	return player ~= nil and player.status == "Playing"
+end
+
+-- Runs every IDLE_MS, or every FRAME_MS while the made-up spectrum is on.
+function update()
+	local now = noctalia.nowMs()
+	local want = simulate and now - lastRealAudio >= REAL_GRACE_MS and playerPlaying()
+	if want then
+		relay(synth.frame(now), true)
+	elseif synthesizing then
+		relay(table.create(channel.BANDS, 0), false)
+	end
+	if want ~= synthesizing then
+		synthesizing = want
+		noctalia.setUpdateInterval(if want then FRAME_MS else IDLE_MS)
+	end
+end
+
+noctalia.setUpdateInterval(IDLE_MS)
 
 local empty = {}
 for i = 1, channel.BANDS do

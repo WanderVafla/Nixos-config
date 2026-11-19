@@ -8,6 +8,10 @@
       "label": "Bands",
       "description": "Number of frequency bands, one per matrix ring."
     },
+    "simulate_when_silent": {
+      "label": "Move without sound",
+      "description": "While a player is playing but the laptop hears nothing (music on the phone), show a made-up spectrum."
+    },
     "color": {
       "label": "Dot color",
       "description": "Color role of the lit dots."

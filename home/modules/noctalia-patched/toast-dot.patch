@@ -1,0 +1,14 @@
+--- a/src/shell/notification/notification_toast.cpp
++++ b/src/shell/notification/notification_toast.cpp
+@@ -2735,9 +2735,9 @@
+   if (!iconAssigned) {
+     iconSlot->addChild(
+         ui::glyph({
+-            .glyph = "bell",
++            .glyph = "point-filled",
+             .glyphSize = iconGlyphSize,
+-            .color = colorSpecFromRole(ColorRole::OnSurfaceVariant),
++            .color = colorSpecFromRole(ColorRole::Error),
+             .configure = [iconSize, &renderer](Glyph& glyph) {
+               glyph.measure(renderer);
+               glyph.setPosition(

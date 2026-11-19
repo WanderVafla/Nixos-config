@@ -33,6 +33,13 @@ entry = "bar.luau"
     advanced = true
 
     [[widget.setting]]
+    key = "simulate_when_silent"
+    type = "bool"
+    label_key = "settings.simulate_when_silent.label"
+    description_key = "settings.simulate_when_silent.description"
+    default = true
+
+    [[widget.setting]]
     key = "color"
     type = "color"
     label_key = "settings.color.label"
