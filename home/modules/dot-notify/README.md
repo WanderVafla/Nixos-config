@@ -10,6 +10,7 @@ notifications that arrived since you last clicked it, like the Nothing-style moc
 | `dot-notify/service.luau` | Counts `Notify` calls on the session bus, polls Do Not Disturb, keeps the count in the plugin data dir |
 | `dot-notify/widget.luau` | Dot, count and tooltip; a click resets the count and opens the notification list |
 | `dot-notify/channel.luau` | Shared state keys between the service and the widget |
+| `dot-notify/icons/dot-off.svg` | Do Not Disturb icon (Tabler has no filled crossed dot) |
 | `dot-notify/translations/en.json` | Setting labels |
 
 ## How it works
@@ -20,7 +21,7 @@ notifications that arrived since you last clicked it, like the Nothing-style moc
   Noctalia panel does not lower it.
 - A click runs `noctalia msg panel-toggle control-center notifications`.
 - A right click toggles Do Not Disturb (`noctalia msg notification-dnd-toggle`); while it is on,
-  the widget shows a crossed-out dot (`circle-off`).
+  the widget shows `icons/dot-off.svg`: a filled dot crossed from the top right to the bottom left.
 
 ## Settings
 

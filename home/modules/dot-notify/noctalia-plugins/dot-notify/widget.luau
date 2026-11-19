@@ -22,7 +22,8 @@ local function show()
 	local dnd = type(state) == "table" and state.dnd == true
 
 	if dnd then
-		barWidget.setGlyph("circle-off")
+		-- Tabler has no filled dot crossed from right to left, so the plugin ships its own.
+		barWidget.setImage(noctalia.pluginDir() .. "/icons/dot-off.svg")
 		barWidget.setGlyphColor("on_surface_variant")
 	else
 		barWidget.setGlyph("point-filled")
