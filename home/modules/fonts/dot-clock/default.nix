@@ -5,9 +5,9 @@
 
 let
   # Dot diameter relative to a grid cell: 1.0 makes neighbouring dots touch.
-  dotScale = "0.8";
+  dotScale = "1.0";
   # Extra space after every character, in font units (a grid cell is 100).
-  tracking = "0";
+  tracking = "-100";
 
   python = pkgs.python3.withPackages (p: [ p.fonttools ]);
 
