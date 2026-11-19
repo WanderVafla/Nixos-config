@@ -1,0 +1,15 @@
+# Catalog of the local Noctalia plugin source: one [[plugin]] row per subdirectory.
+# Keep the fields in sync with each plugin's plugin.toml.
+
+[[plugin]]
+id = "vladyslav/dot-spectrum"
+name = "Dot Spectrum"
+version = "0.1.0"
+updated_at = 1795107600
+added_at = 1795107600
+author = "vladyslav"
+license = "MIT"
+icon = "grid-dots"
+description = "Audio visualizer made of dots: a small equalizer in the bar and a round 25x25 dot matrix on the desktop."
+plugin_api = 33
+tags = ["audio", "desktop", "visualizer"]

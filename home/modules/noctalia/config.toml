@@ -9,7 +9,7 @@ order = [ "default" ]
     [bar.default]
     capsule_thickness = 0.99999998137354851
     center = [ "weather", "date", "clock" ]
-    end = [ "group:g1", "volume", "battery", "session", "dot-notify" ]
+    end = [ "group:g1", "volume", "battery", "session", "dot-spectrum", "dot-notify" ]
     padding = 10
     scale = 0.80000000447034836
     start = [ "nix-monitor", "keyboard_layout", "workspaces", "taskbar", "active_window" ]
@@ -35,7 +35,7 @@ sidebar = "full"
 
 [desktop_widgets]
 schema_version = 2
-widget_order = [ "desktop-widget-0000000000000002" ]
+widget_order = [ "desktop-widget-0000000000000002", "desktop-widget-0000000000000003" ]
 
     [desktop_widgets.grid]
     cell_size = 16
@@ -58,6 +58,22 @@ widget_order = [ "desktop-widget-0000000000000002" ]
         background_opacity = 0.0
         pitch = 14.0
         show_date = true
+
+    # Round dot-matrix audio visualizer (home/modules/dot-spectrum); needs the dot-spectrum bar widget
+    [desktop_widgets.widget.desktop-widget-0000000000000003]
+    box_height = 280.0
+    box_width = 280.0
+    cx = 1500.0
+    cy = 640.0
+    output = "eDP-1"
+    placement_height = 1200.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "vladyslav/dot-spectrum:matrix"
+
+        [desktop_widgets.widget.desktop-widget-0000000000000003.settings]
+        background = false
+        background_opacity = 0.0
 
 [idle]
 behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
@@ -297,6 +313,12 @@ capsule_radius = "auto"
 focused_color = "tertiary"
 group_by_workspace = true
 hide_empty_workspaces = true
+
+# Dot equalizer that also relays the audio spectrum to the desktop matrix (home/modules/dot-spectrum)
+[widget.dot-spectrum]
+audio_spectrum = true
+audio_spectrum_bands = 13
+type = "vladyslav/dot-spectrum:spectrum"
 
 # Red dot with the unseen count, from home/modules/dot-notify
 [widget.dot-notify]

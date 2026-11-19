@@ -1,0 +1,32 @@
+{
+  "settings": {
+    "audio_spectrum": {
+      "label": "Audio spectrum",
+      "description": "Receive the audio spectrum; the desktop matrix needs it."
+    },
+    "audio_spectrum_bands": {
+      "label": "Bands",
+      "description": "Number of frequency bands, one per matrix ring."
+    },
+    "color": {
+      "label": "Dot color",
+      "description": "Color role of the lit dots."
+    },
+    "pitch": {
+      "label": "Grid step",
+      "description": "Distance between two dot centers in pixels; sets the matrix size."
+    },
+    "dot_scale": {
+      "label": "Dot size",
+      "description": "Dot diameter relative to the grid step."
+    },
+    "off_opacity": {
+      "label": "Unlit dots",
+      "description": "Opacity of the dots that are off, like unlit LEDs; 0 hides them."
+    },
+    "accent_color": {
+      "label": "Accent color",
+      "description": "Color role of the center dot."
+    }
+  }
+}

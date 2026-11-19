@@ -1,0 +1,88 @@
+id = "vladyslav/dot-spectrum"
+name = "Dot Spectrum"
+version = "0.1.0"
+plugin_api = 33
+author = "vladyslav"
+license = "MIT"
+icon = "grid-dots"
+description = "Audio visualizer made of dots: a small equalizer in the bar and a round 25x25 dot matrix on the desktop."
+tags = [ "audio", "desktop", "visualizer" ]
+
+# Noctalia sends the audio spectrum only to bar widgets, so this one also relays every frame to
+# the desktop matrix through the plugin state.
+[[widget]]
+id = "spectrum"
+entry = "bar.luau"
+
+    [[widget.setting]]
+    key = "audio_spectrum"
+    type = "bool"
+    label_key = "settings.audio_spectrum.label"
+    description_key = "settings.audio_spectrum.description"
+    default = true
+    advanced = true
+
+    [[widget.setting]]
+    key = "audio_spectrum_bands"
+    type = "int"
+    label_key = "settings.audio_spectrum_bands.label"
+    description_key = "settings.audio_spectrum_bands.description"
+    default = 13
+    min = 13
+    max = 13
+    advanced = true
+
+    [[widget.setting]]
+    key = "color"
+    type = "color"
+    label_key = "settings.color.label"
+    description_key = "settings.color.description"
+    default = "on_surface"
+
+[[desktop_widget]]
+id = "matrix"
+entry = "matrix.luau"
+
+    [[desktop_widget.setting]]
+    key = "pitch"
+    type = "double"
+    label_key = "settings.pitch.label"
+    description_key = "settings.pitch.description"
+    default = 10.0
+    min = 4.0
+    max = 30.0
+    step = 1.0
+
+    [[desktop_widget.setting]]
+    key = "dot_scale"
+    type = "double"
+    label_key = "settings.dot_scale.label"
+    description_key = "settings.dot_scale.description"
+    default = 0.7
+    min = 0.2
+    max = 1.0
+    step = 0.05
+
+    [[desktop_widget.setting]]
+    key = "off_opacity"
+    type = "double"
+    label_key = "settings.off_opacity.label"
+    description_key = "settings.off_opacity.description"
+    default = 0.12
+    min = 0.0
+    max = 0.5
+    step = 0.02
+
+    [[desktop_widget.setting]]
+    key = "color"
+    type = "color"
+    label_key = "settings.color.label"
+    description_key = "settings.color.description"
+    default = "on_surface"
+
+    [[desktop_widget.setting]]
+    key = "accent_color"
+    type = "color"
+    label_key = "settings.accent_color.label"
+    description_key = "settings.accent_color.description"
+    default = "error"
