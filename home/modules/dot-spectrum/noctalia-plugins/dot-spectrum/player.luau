@@ -20,6 +20,7 @@ local dimColor = conf("dim_color", "on_surface_variant")
 local accent = conf("accent_color", "error")
 local titleFont = conf("title_font", "Doto Round")
 local textFont = conf("text_font", "Space Mono")
+local transparent = conf("transparent_background", false)
 
 local PROGRESS_DOTS = 30
 local FRAME_MS = 50
@@ -102,7 +103,7 @@ local function render()
 		align = "center",
 		padding = 22,
 		radius = 18,
-		fill = "surface",
+		fill = if transparent then "#00000000" else "surface",
 		border = "outline_variant",
 		borderWidth = 1,
 	}, {

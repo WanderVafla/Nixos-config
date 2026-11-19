@@ -43,6 +43,10 @@
     "text_font": {
       "label": "Text font",
       "description": "Font of the small text."
+    },
+    "transparent_background": {
+      "label": "Transparent background",
+      "description": "Drop the card's fill so the disc and the text sit on the wallpaper; the outline stays."
     }
   }
 }

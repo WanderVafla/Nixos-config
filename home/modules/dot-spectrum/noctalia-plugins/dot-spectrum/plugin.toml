@@ -103,6 +103,13 @@ entry = "player.luau"
     step = 10.0
 
     [[desktop_widget.setting]]
+    key = "transparent_background"
+    type = "bool"
+    label_key = "settings.transparent_background.label"
+    description_key = "settings.transparent_background.description"
+    default = false
+
+    [[desktop_widget.setting]]
     key = "color"
     type = "color"
     label_key = "settings.color.label"
