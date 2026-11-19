@@ -1,16 +1,19 @@
-"""Freeze Doto at its heaviest weight with round dots, shrink every dot and rename the family.
+"""Freeze Doto at its heaviest weight, shrink every dot, add tracking and rename the family.
 
-Usage: doto-round.py <Doto.ttf> <output.ttf> <family name> <dot scale>
-A dot scale below 1 makes each dot smaller around its own center, so the gaps between dots grow
-while the dot grid, and with it the glyph size and spacing, stays the same.
+Usage: doto-round.py <Doto.ttf> <output.ttf> <family name> <dot scale> <roundness> <tracking>
+- dot scale below 1 makes each dot smaller around its own center, so the gaps between dots grow
+  while the dot grid, and with it the glyph size, stays the same;
+- roundness is Doto's ROND axis: 0 gives square dots, 100 round ones;
+- tracking is added to every advance width, in font units (a digit is 600 wide).
 """
 import sys
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
 
-src, dst, family, dot_scale = sys.argv[1], sys.argv[2], sys.argv[3], float(sys.argv[4])
+src, dst, family = sys.argv[1], sys.argv[2], sys.argv[3]
+dot_scale, roundness, tracking = float(sys.argv[4]), float(sys.argv[5]), int(sys.argv[6])
 
-font = instantiateVariableFont(TTFont(src), {"wght": 900, "ROND": 100})
+font = instantiateVariableFont(TTFont(src), {"wght": 900, "ROND": roundness})
 
 glyf = font["glyf"]
 for name in font.getGlyphOrder():
@@ -28,6 +31,10 @@ for name in font.getGlyphOrder():
             coords[i] = (round(cx + (x - cx) * dot_scale), round(cy + (y - cy) * dot_scale))
         start = end + 1
     glyph.recalcBounds(glyf)
+
+hmtx = font["hmtx"]
+for name, (advance, lsb) in hmtx.metrics.items():
+    hmtx.metrics[name] = (max(0, advance + tracking), lsb)
 
 names = font["name"]
 for name_id in (16, 17, 21, 22):  # typographic and WWS names would override the family below
