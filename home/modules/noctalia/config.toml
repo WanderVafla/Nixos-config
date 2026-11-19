@@ -190,8 +190,18 @@ widget_order = [
         color = "tertiary"
         shadow = true
 
+# Toasts styled like the Nothing mockup: bottom right, opaque card with a 1px outline
 [notification]
+background_opacity = 1.0
+border = true
+border_color = "outline_variant"
+border_width = 1.0
+offset_x = 14
+offset_y = 14
+position = "bottom_right"
 scale = 0.85000000521540642
+show_app_name = true
+width = 380
 
 [osd.kinds]
 keyboard_layout = false
