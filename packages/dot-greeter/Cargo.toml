@@ -1,0 +1,11 @@
+[package]
+name = "dot-greeter"
+version = "0.1.0"
+edition = "2024"
+description = "Minimal console greeter for greetd that shows nothing but dots"
+license = "GPL-3.0-only"
+
+[dependencies]
+crossterm = "0.29"
+greetd_ipc = { version = "0.10", features = ["sync-codec"] }
+zeroize = "1"

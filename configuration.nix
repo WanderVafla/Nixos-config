@@ -14,6 +14,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     inputs.noctalia-greeter.nixosModules.default
+    ./system/greeter.nix
   ];
 
   nix.settings.experimental-features = [
