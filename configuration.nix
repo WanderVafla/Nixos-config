@@ -26,9 +26,26 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.timeout = 1;
+  boot.initrd.services.lvm.enable = false;
+  boot.initrd.systemd.tpm2.enable = false;
+  # Keeps the initrd as small as xz does, but without xz's ~1.2 s slower unpacking at boot.
+  boot.initrd.compressor = "zstd";
+  boot.initrd.compressorArgs = [ "-19" "-T0" ];
+  # Mount /boot on first access (nixos-rebuild) instead of at boot: mounting it took ~1.7 s and
+  # held up local-fs.target, and with it everything up to the login screen.
+  # nofail keeps /boot out of local-fs.target's requirements: on a live switch /boot is already
+  # mounted, boot.automount refuses to start, and without nofail that failure sends the whole
+  # system into emergency mode.
+  fileSystems."/boot".options = [
+    "noauto"
+    "nofail"
+    "x-systemd.automount"
+  ];
   # /boot is only 196 MB and every generation keeps its own kernel and initrd there.
   boot.loader.systemd-boot.configurationLimit = 3;
   systemd.services.NetworkManager-wait-online.enable = false;
+
   zramSwap = {
     enable = true;
     memoryPercent = 50;
