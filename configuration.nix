@@ -244,15 +244,15 @@
   programs.hyprland = {
     enable = true;
   };
-  
+
   programs = {
     steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
+      enable = true;
+      remotePlay.openFirewall = true;
+    };
+    gamemode.enable = true;
   };
-  gamemode.enable = true;
-  };
-  
+
   programs.zsh = {
     enable = true;
   };
