@@ -4,6 +4,7 @@
 
 {
   config,
+  lib,
   pkgs,
   inputs,
   ...
@@ -66,11 +67,17 @@
   networking.networkmanager = {
     enable = true;
   };
-  # Cours d'APL
+  # Cours d'APL. Installed but not started at boot: stopping it cost 1-2 s of every shutdown.
+  # Start it for class with `sudo systemctl start netbird`.
   services.netbird.enable = true;
+  systemd.services.netbird.wantedBy = lib.mkForce [ ];
 
   virtualisation.libvirtd = {
-    enable = true;
+    onBoot = false;
+    # Shut running VMs down at power-off instead of saving their memory to disk (the default
+    # "suspend" wrote the alpine VM out and added ~1 s to shutdown).
+    onShutdown = "shutdown";
+    # enable = true;
     qemu.swtpm.enable = true;
   };
 
