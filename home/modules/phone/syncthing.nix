@@ -1,5 +1,5 @@
 # Two-way file sync with the phone via Syncthing: ~/Phone and the Obsidian vault.
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   id = config.phone.syncthingId;
@@ -16,6 +16,10 @@ in
       .trash
     '';
   };
+
+  # Syncthing rescans both folders and syncthing-init waits for its API (~3.6 s) right at login;
+  # starting it a little later leaves the CPU and disk to Hyprland and Noctalia.
+  systemd.user.services.syncthing.Service.ExecStartPre = "${pkgs.coreutils}/bin/sleep 15";
 
   services.syncthing = {
     enable = true;

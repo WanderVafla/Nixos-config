@@ -72,7 +72,11 @@ end)
 hl.config({
     misc = {
         force_default_wallpaper = 0,    -- Set to 0 or 1 to disable the anime mascot wallpapers
-        disable_hyprland_logo   = false, -- If true disables the random hyprland logo / anime girl background. :(
+        -- Plain black instead of Hyprland's own wallpaper for the second before Noctalia draws
+        -- its wallpaper, so login goes black greeter -> black -> desktop.
+        disable_hyprland_logo   = true,
+        disable_splash_rendering = true,
+        background_color        = "rgb(000000)",
     },
 })
 
